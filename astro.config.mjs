@@ -5,8 +5,9 @@ import { defineConfig } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
-  site: "https://xenthrall.github.io",
-  base: "/tequia",
+  // Dominio propio (ver public/CNAME) servido en la raíz — sin `base`,
+  // GitHub Pages ya no publica el sitio bajo /tequia/.
+  site: "https://tequia.dev",
 
   vite: {
     plugins: [tailwindcss()],
