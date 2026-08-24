@@ -1,0 +1,42 @@
+---
+import "../styles/global.css";
+import { withBase } from "../lib/base-url";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "Jhon Tequia",
+  description = "Jhon Tequia — enlaces, proyectos y servicios de Jhon.",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="description" content={description} />
+
+    <link rel="icon" type="image/svg+xml" href={withBase("favicon.svg")} />
+    <link rel="alternate icon" href={withBase("favicon.ico")} />
+
+    <title>{title}</title>
+
+    <script is:inline>
+      try {
+        if (localStorage.getItem("theme") === "light") {
+          document.documentElement.classList.add("light-mode");
+        }
+      } catch {}
+    </script>
+  </head>
+
+  <body>
+    <slot />
+  </body>
+</html>
