@@ -1,6 +1,4 @@
 import { initChatbot } from "../chatbot/chatbot";
-import { initMusicPlayer } from "../music/music-player";
-import { initCinema } from "../cinema/cinema";
 
 // Theme toggle with persisted preference
 const themeToggle = document.querySelector<HTMLButtonElement>("#theme-toggle");
@@ -17,9 +15,3 @@ themeToggle?.addEventListener("click", () => {
 
 // Jhon's Assistant
 initChatbot();
-
-// Music player
-initMusicPlayer();
-
-// Modo cine (capa inmersiva que aparece mientras suena la música)
-initCinema();
