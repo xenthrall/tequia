@@ -113,7 +113,7 @@ const en: UiStrings = {
     recruiter: {
       title: "I'm hiring talent",
       description: "Experience, stack, availability and CV for recruiters.",
-      cta: "View hire-me page",
+      cta: "View my profile",
     },
   },
   hireMe: {
@@ -181,7 +181,7 @@ const es: UiStrings = {
     recruiter: {
       title: "Busco talento",
       description: "Experiencia, stack, disponibilidad y CV para reclutadores.",
-      cta: "Ir a hire-me",
+      cta: "Ver mi perfil",
     },
   },
   hireMe: {

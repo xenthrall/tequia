@@ -29,7 +29,7 @@ export const hireMe: HireMeContent = {
       description: "In progress.",
     },
   ],
-  cvUrl: "/cv/jhon-tequia.pdf",
+  cvUrl: "/cv/jhon-tequia-en.pdf",
   cvLabel: "Download CV",
   ctaLabel: "Let's talk about a role",
   contactSubtitle: "Hiring for a full-time role or a short-term project? Tell me about it and let's see if it's a fit.",

@@ -29,7 +29,7 @@ export const hireMe: HireMeContent = {
       description: "En curso.",
     },
   ],
-  cvUrl: "/cv/jhon-tequia.pdf",
+  cvUrl: "/cv/jhon-tequia-es.pdf",
   cvLabel: "Descargar CV",
   ctaLabel: "Hablemos de una oportunidad",
   contactSubtitle: "¿Tienes una vacante de tiempo completo o un proyecto corto? Cuéntame de qué se trata y veamos si encajamos.",

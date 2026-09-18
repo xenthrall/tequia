@@ -99,7 +99,7 @@ El resto de la home se simplifica: menos "linktree personal" (Instagram puede ba
 - [x] SEO básico: canonical + `hreflang` (incluye `x-default`) por página, OG/Twitter cards, JSON-LD `Person`, sitemap con anotaciones de idioma (`@astrojs/sitemap`), `robots.txt`.
 - [x] Chatbot traducido (intents, quick replies y copy de la UI) y activo en ambos idiomas.
 - [ ] LinkedIn en los enlaces sociales — **pendiente**, sigue bloqueado por la sección 12 (no se fabricó una URL).
-- [ ] CV en PDF real — la ruta `/cv/jhon-tequia.pdf` ya está enlazada desde `/hire-me` en ambos idiomas, pero el archivo aún no existe en `public/cv/`; hoy el botón de descarga da 404 hasta que Jhon entregue el PDF.
+- [ ] CV en PDF real — cada idioma ya apunta a su propio archivo (`/cv/jhon-tequia-en.pdf` y `/cv/jhon-tequia-es.pdf`, ver `src/data/hire-me.en.ts`/`hire-me.es.ts`), pero los archivos aún no existen en `public/cv/`; hoy el botón de descarga da 404 hasta que Jhon coloque ahí los dos PDF.
 
 **Fase 2 — Contenido y prueba de valor.**
 - Reescribir el copy de cada sección con el lenguaje correcto por audiencia.

@@ -28,8 +28,8 @@ export interface HireMeContent {
   stackGroups: StackGroup[];
   experience: ExperienceItem[];
   education: EducationItem[];
-  // Ruta al PDF del CV dentro de `public/`. Falta el archivo real — ver
-  // docs/vision.md §12 (pendiente que Jhon entregue el PDF).
+  // Ruta al PDF del CV de este idioma, servido desde `public/cv/`
+  // (public/cv/jhon-tequia-en.pdf y public/cv/jhon-tequia-es.pdf).
   cvUrl: string;
   cvLabel: string;
   ctaLabel: string;
