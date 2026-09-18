@@ -1,6 +1,7 @@
 import { renderMascotIcon } from "../icons/mascot";
 import { uiIcons } from "../icons/ui";
 import type { ChatLink } from "./chatbot-data";
+import type { ChatCopy } from "./chatbot-copy";
 
 interface ChatEls {
   root: HTMLDivElement;
@@ -14,6 +15,7 @@ interface ChatEls {
 }
 
 const els = {} as ChatEls;
+let copy: ChatCopy;
 
 const chatInputClasses =
   "min-w-0 flex-1 rounded-[14px] border-none bg-[var(--card)] px-3 py-2.5 text-[0.86rem] text-[var(--text)] outline-none placeholder:text-[var(--muted)]";
@@ -45,7 +47,9 @@ function renderLinks(links: ChatLink[] = []): string {
   `;
 }
 
-export function mountChatWidget(): ChatEls {
+export function mountChatWidget(chatCopy: ChatCopy): ChatEls {
+  copy = chatCopy;
+
   const root = document.createElement("div");
   root.className = "chat-widget";
 
@@ -57,7 +61,7 @@ export function mountChatWidget(): ChatEls {
       aria-haspopup="dialog"
       aria-expanded="false"
       aria-controls="chat-panel"
-      aria-label="Abrir el asistente de Jhon"
+      aria-label="${copy.openAriaLabel}"
     >
       <span class="pointer-events-none absolute inset-0 animate-[chat-fab-pulse_2.6s_ease-out_infinite] rounded-[inherit] bg-[rgba(139,92,246,0.45)]" aria-hidden="true"></span>
       ${mascot("h-[26px] w-[30px]")}
@@ -67,16 +71,16 @@ export function mountChatWidget(): ChatEls {
       id="chat-panel"
       class="chat-panel invisible fixed inset-0 z-[62] flex h-dvh w-screen origin-bottom-right translate-y-[18px] flex-col overflow-hidden rounded-none border border-[var(--border)] bg-[var(--background)] bg-[linear-gradient(180deg,var(--card),var(--background)_60%)] opacity-0 shadow-[0_30px_70px_rgba(0,0,0,0.45),inset_0_1px_rgba(255,255,255,0.05)] backdrop-blur-[22px] transition-[opacity,transform,visibility] duration-[220ms] sm:inset-auto sm:bottom-[92px] sm:right-[22px] sm:h-auto sm:w-[min(380px,calc(100vw-32px))] sm:max-h-[min(600px,calc(100dvh-130px))] sm:translate-y-[14px] sm:scale-[0.96] sm:rounded-[22px]"
       role="dialog"
-      aria-label="Asistente de Jhon"
+      aria-label="${copy.dialogAriaLabel}"
       aria-hidden="true"
     >
       <header class="flex shrink-0 items-center justify-between border-b border-[var(--border)] px-4 pb-[14px] pt-[calc(16px+env(safe-area-inset-top))]">
         <div class="flex items-center gap-2.5">
           ${mascot("h-[26px] w-[30px]")}
           <div>
-            <p class="m-0 text-[0.92rem] font-bold tracking-[-0.01em] text-[var(--text)]">Jhon's Assistant</p>
+            <p class="m-0 text-[0.92rem] font-bold tracking-[-0.01em] text-[var(--text)]">${copy.assistantName}</p>
             <p class="mt-[2px] flex items-center gap-[5px] text-[0.72rem] text-[var(--muted)]">
-              <span class="h-1.5 w-1.5 rounded-full bg-[#22c55e] shadow-[0_0_0_3px_rgba(34,197,94,0.18)]" aria-hidden="true"></span>En línea
+              <span class="h-1.5 w-1.5 rounded-full bg-[#22c55e] shadow-[0_0_0_3px_rgba(34,197,94,0.18)]" aria-hidden="true"></span>${copy.onlineLabel}
             </p>
           </div>
         </div>
@@ -85,7 +89,7 @@ export function mountChatWidget(): ChatEls {
           id="chat-close"
           class="grid h-8 w-8 cursor-pointer place-items-center rounded-full border border-[var(--border)] bg-transparent text-[var(--text)] transition duration-200 hover:rotate-90 hover:bg-[var(--card-hover)] [&_svg]:h-[15px] [&_svg]:w-[15px]"
           type="button"
-          aria-label="Cerrar asistente"
+          aria-label="${copy.closeButtonAriaLabel}"
         >
           ${uiIcons.close}
         </button>
@@ -103,14 +107,14 @@ export function mountChatWidget(): ChatEls {
           class="${chatInputClasses}"
           type="text"
           name="message"
-          placeholder="Escribe un mensaje..."
-          aria-label="Escribe tu mensaje para el asistente"
+          placeholder="${copy.inputPlaceholder}"
+          aria-label="${copy.inputAriaLabel}"
         />
         <button
           id="chat-send"
           class="grid h-[38px] w-[38px] shrink-0 cursor-pointer place-items-center rounded-full border-none bg-[linear-gradient(145deg,#a78bfa,#6d28d9)] text-white transition duration-200 hover:enabled:-translate-y-0.5 hover:enabled:scale-[1.04] active:enabled:scale-[0.92] disabled:cursor-default disabled:opacity-40 [&_svg]:h-4 [&_svg]:w-4"
           type="submit"
-          aria-label="Enviar mensaje"
+          aria-label="${copy.sendAriaLabel}"
           disabled
         >
           ${uiIcons.send}
@@ -204,7 +208,7 @@ export function showTypingIndicator(): HTMLDivElement {
     <div
       class="flex items-center gap-1 rounded-[16px_16px_16px_4px] border border-[var(--border)] bg-[var(--card)] px-[14px] py-[13px] ${bubbleShadow}"
       role="status"
-      aria-label="El asistente está escribiendo"
+      aria-label="${copy.typingAriaLabel}"
     >
       <span class="${dotClasses}"></span><span class="${dotClasses}"></span><span class="${dotClasses}"></span>
     </div>
@@ -225,7 +229,7 @@ export function openPanel(): void {
   els.panel.setAttribute("aria-hidden", "false");
   els.toggle.setAttribute("aria-expanded", "true");
   els.toggle.classList.add("is-active");
-  els.toggle.setAttribute("aria-label", "Cerrar el asistente de Jhon");
+  els.toggle.setAttribute("aria-label", copy.closeToggleAriaLabel);
 
   window.requestAnimationFrame(() => els.input.focus());
 }
@@ -235,7 +239,7 @@ export function closePanel(): void {
   els.panel.setAttribute("aria-hidden", "true");
   els.toggle.setAttribute("aria-expanded", "false");
   els.toggle.classList.remove("is-active");
-  els.toggle.setAttribute("aria-label", "Abrir el asistente de Jhon");
+  els.toggle.setAttribute("aria-label", copy.openAriaLabel);
 
   els.toggle.focus();
 }

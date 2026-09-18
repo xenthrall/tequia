@@ -1,3 +1,7 @@
+import type { Locale } from "../i18n/config";
+import { contact as en } from "./contact.en";
+import { contact as es } from "./contact.es";
+
 export interface ContactConfig {
   formspreeId: string;
   whatsapp: {
@@ -6,12 +10,8 @@ export interface ContactConfig {
   };
 }
 
-// Datos de la sección de contacto.
-export const contact: ContactConfig = {
-  formspreeId: "mkjwrazq",
-  whatsapp: {
-    number: "573248213023",
-    message:
-      "Hola Jhon, me interesa conversar contigo sobre una idea o proyecto que tengo y quisiera conocer cómo podrías ayudarme.",
-  },
-};
+const contactByLocale: Record<Locale, ContactConfig> = { en, es };
+
+export function getContact(locale: Locale): ContactConfig {
+  return contactByLocale[locale];
+}

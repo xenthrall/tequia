@@ -2,12 +2,21 @@
 import { links } from "../data/links";
 import { renderBrandIcon, brandIconAccentClass } from "../icons/brands";
 import { uiIcons } from "../icons/ui";
+import { getStrings } from "../i18n/strings";
+import type { Locale } from "../i18n/config";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const strings = getStrings(locale);
 
 const cardBaseClasses =
   "border border-[var(--border)] text-[var(--text)] no-underline shadow-[0_10px_35px_rgba(0,0,0,0.12),inset_0_1px_rgba(255,255,255,0.035)] backdrop-blur-[18px] transition duration-200 hover:-translate-y-[3px] hover:border-[rgba(255,255,255,0.18)] hover:bg-[var(--card-hover)] hover:shadow-[0_18px_45px_rgba(0,0,0,0.22),inset_0_1px_rgba(255,255,255,0.06)] active:scale-[0.985]";
 ---
 
-<section class="mt-[26px] flex flex-col gap-3 sm:mt-[30px]" aria-label="Enlaces">
+<section class="mt-[26px] flex flex-col gap-3 sm:mt-[30px]" aria-label={strings.sections.links}>
   {
     links.map((link) =>
       link.featured ? (

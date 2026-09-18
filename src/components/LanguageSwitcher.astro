@@ -1,0 +1,42 @@
+---
+import { locales, localizedPath, type Locale } from "../i18n/config";
+import { getStrings } from "../i18n/strings";
+import { uiIcons } from "../icons/ui";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const strings = getStrings(locale);
+---
+
+<details class="relative">
+  <summary
+    class="grid h-10 w-10 cursor-pointer list-none place-items-center rounded-full border border-[var(--border)] bg-[var(--card)] text-[var(--text)] backdrop-blur-[14px] transition duration-200 marker:content-none hover:-translate-y-0.5 hover:border-white/20 hover:bg-[var(--card-hover)] active:scale-[0.94] sm:h-[42px] sm:w-[42px] [&::-webkit-details-marker]:hidden [&_svg]:h-[19px] [&_svg]:w-[19px]"
+    aria-label={strings.header.languageSwitcher}
+  >
+    <Fragment set:html={uiIcons.language} />
+  </summary>
+
+  <div class="absolute left-1/2 top-[calc(100%+8px)] z-10 min-w-[140px] -translate-x-1/2 overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--card)] shadow-[0_10px_35px_rgba(0,0,0,0.25)] backdrop-blur-xl">
+    {
+      locales.map((l) => {
+        const href = localizedPath(Astro.url.pathname, l.code);
+        return (
+          <a
+            href={href}
+            class:list={[
+              "block px-4 py-2.5 text-sm no-underline transition duration-150",
+              l.code === locale
+                ? "bg-[rgba(var(--accent-rgb),0.16)] font-semibold text-[var(--accent)]"
+                : "text-[var(--text)] hover:bg-[var(--card-hover)]",
+            ]}
+          >
+            {l.label}
+          </a>
+        );
+      })
+    }
+  </div>
+</details>

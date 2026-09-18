@@ -1,0 +1,14 @@
+---
+import PageShell from "../../layouts/PageShell.astro";
+import HireMeContent from "../../components/HireMeContent.astro";
+import { getHireMe } from "../../data/hire-me";
+import { getProfile } from "../../data/profile";
+
+const locale = "es" as const;
+const hireMe = getHireMe(locale);
+const profile = getProfile(locale);
+---
+
+<PageShell locale={locale} title={`${profile.name} — Hire me`} description={hireMe.headline}>
+  <HireMeContent locale={locale} />
+</PageShell>

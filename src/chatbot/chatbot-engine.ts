@@ -1,4 +1,4 @@
-import { intents, fallbackResponse, type ChatResponse } from "./chatbot-data";
+import type { ChatbotData, ChatResponse, Intent } from "./chatbot-data";
 
 // Palabras/frases de 4 caracteres o menos solo cuentan como coincidencia si
 // aparecen como palabra completa, para evitar falsos positivos (p.ej. "sena"
@@ -15,7 +15,7 @@ function normalize(text: string): string {
     .trim();
 }
 
-function matchIntent(message: string) {
+function matchIntent(message: string, intents: Intent[]) {
   const normalizedMessage = normalize(message);
   if (!normalizedMessage) return null;
 
@@ -66,16 +66,16 @@ const MAX_DELAY_MS = 900;
 //     return res.json();
 //   }
 //
-export async function respond(message: string): Promise<ChatResponse> {
+export async function respond(message: string, data: ChatbotData): Promise<ChatResponse> {
   // El pequeño delay simula latencia de red para que el typing indicator
   // se sienta natural, y para que el contrato ya sea "async" desde ahora.
   const delay = MIN_DELAY_MS + Math.random() * (MAX_DELAY_MS - MIN_DELAY_MS);
   await wait(delay);
 
-  const intent = matchIntent(message);
+  const intent = matchIntent(message, data.intents);
 
   if (!intent) {
-    return { ...fallbackResponse };
+    return { ...data.fallbackResponse };
   }
 
   return {

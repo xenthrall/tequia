@@ -1,31 +1,77 @@
 ---
 import "../styles/global.css";
 import { withBase } from "../lib/base-url";
+import { locales, siteUrl, alternateLinks, defaultLocale, type Locale } from "../i18n/config";
+import { getProfile } from "../data/profile";
 
 interface Props {
+  locale: Locale;
   title?: string;
   description?: string;
 }
 
-const {
-  title = "Jhon Tequia",
-  description = "Jhon Tequia — enlaces, proyectos y servicios de Jhon.",
-} = Astro.props;
+const { locale, title = "Jhon Tequia", description } = Astro.props;
+
+const profile = getProfile(locale);
+const pageDescription = description ?? profile.description;
+
+const alternates = alternateLinks(Astro.url.pathname);
+const canonicalUrl = alternates.find((alt) => alt.locale === locale)?.href ?? `${siteUrl}/${defaultLocale}/`;
+const defaultAlternate = alternates.find((alt) => alt.locale === defaultLocale);
+
+const ogImage = `${siteUrl}${withBase("profile.webp")}`;
+
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: profile.name,
+  jobTitle: profile.role,
+  description: profile.description,
+  url: canonicalUrl,
+  image: ogImage,
+};
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang={locale}>
   <head>
     <meta charset="UTF-8" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <meta name="description" content={description} />
+    <meta name="description" content={pageDescription} />
+
+    <link rel="canonical" href={canonicalUrl} />
+    {
+      alternates.map((alt) => (
+        <link rel="alternate" hreflang={alt.locale} href={alt.href} />
+      ))
+    }
+    {defaultAlternate && <link rel="alternate" hreflang="x-default" href={defaultAlternate.href} />}
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content={locale === "es" ? "es_CO" : "en_US"} />
+    {
+      locales
+        .filter((l) => l.code !== locale)
+        .map((l) => <meta property="og:locale:alternate" content={l.code === "es" ? "es_CO" : "en_US"} />)
+    }
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={pageDescription} />
+    <meta name="twitter:image" content={ogImage} />
 
     <link rel="icon" type="image/svg+xml" href={withBase("favicon.svg")} />
     <link rel="alternate icon" href={withBase("favicon.ico")} />
 
     <title>{title}</title>
+
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(personJsonLd)} />
 
     <script is:inline>
       try {
