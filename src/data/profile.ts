@@ -1,3 +1,7 @@
+import type { Locale } from "../i18n/config";
+import { profile as en } from "./profile.en";
+import { profile as es } from "./profile.es";
+
 export interface Profile {
   name: string;
   role: string;
@@ -5,10 +9,8 @@ export interface Profile {
   avatar: string;
 }
 
-export const profile: Profile = {
-  name: "Jhon Tequia",
-  role: "Software Developer · Laravel & PHP · Builder",
-  description:
-    "Desarrollo aplicaciones web, sistemas empresariales y productos digitales con arquitecturas modulares y escalables.",
-  avatar: "/profile.webp",
-};
+const profiles: Record<Locale, Profile> = { en, es };
+
+export function getProfile(locale: Locale): Profile {
+  return profiles[locale];
+}

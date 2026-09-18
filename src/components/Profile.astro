@@ -1,8 +1,16 @@
 ---
-import { profile } from "../data/profile";
+import { getProfile } from "../data/profile";
 import { socialLinks } from "../data/social-links";
 import { renderBrandIcon } from "../icons/brands";
 import { withBase } from "../lib/base-url";
+import type { Locale } from "../i18n/config";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const profile = getProfile(locale);
 ---
 
 <section class="flex flex-col items-center text-center">
@@ -22,7 +30,7 @@ import { withBase } from "../lib/base-url";
     {profile.description}
   </p>
 
-  <nav class="mt-[18px] flex gap-[11px]" aria-label="Redes sociales">
+  <nav class="mt-[18px] flex gap-[11px]" aria-label="Social">
     {
       socialLinks.map(({ name, url, icon }) => (
         <a

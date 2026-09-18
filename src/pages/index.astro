@@ -1,33 +1,54 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import Header from "../components/Header.astro";
-import Profile from "../components/Profile.astro";
-import Projects from "../components/Projects.astro";
-import Links from "../components/Links.astro";
-import Contact from "../components/Contact.astro";
-import Footer from "../components/Footer.astro";
+// Stub de detección de idioma para el dominio pelado (tequia.dev/).
+// No es una ruta i18n de Astro ni tiene contenido propio: solo declara
+// canonical + hreflang hacia /en/ y /es/ (para que los crawlers indexen esas
+// dos rutas de forma independiente, ver docs/vision.md §11) y redirige al
+// visitante real por JS según su idioma de navegador.
+import { alternateLinks, localizedPath, defaultLocale, type Locale } from "../i18n/config";
+
+// `canonical`/`hreflang` deben ser absolutos y apuntar siempre al dominio de
+// producción (así lo exigen los crawlers, sin importar desde dónde se sirva
+// esta página). La redirección real del visitante, en cambio, debe ser una
+// ruta relativa: si fuera absoluta a tequia.dev, probar en local (o en un
+// preview de PR) te sacaría del host actual hacia producción.
+const alternates = alternateLinks("/");
+const hrefFor = (locale: Locale) => alternates.find((alt) => alt.locale === locale)!.href;
+
+const defaultHref = hrefFor(defaultLocale);
+
+const enPath = localizedPath("/", "en");
+const esPath = localizedPath("/", "es");
+const defaultPath = localizedPath("/", defaultLocale);
 ---
 
-<Layout>
-  <main class="page-shell relative isolate min-h-screen overflow-hidden">
-    <!-- Background decoration -->
-    <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
-      <div class="absolute left-1/2 top-[-250px] h-[420px] w-[420px] -translate-x-1/2 rounded-full bg-[#8b5cf6] opacity-[0.18] blur-[100px]"></div>
-      <div class="absolute bottom-[-180px] right-[-260px] h-[420px] w-[420px] rounded-full bg-[#2563eb] opacity-[0.18] blur-[100px]"></div>
-      <div class="grid-overlay"></div>
-    </div>
+<!doctype html>
+<html lang={defaultLocale}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <div class="mx-auto w-[min(100%-24px,520px)] pb-[42px] pt-4 sm:w-[min(100%-32px,680px)] sm:pt-6">
-      <Header />
-      <Profile />
-      <Projects />
-      <Links />
-      <Contact />
-      <Footer />
-    </div>
-  </main>
-</Layout>
+    <link rel="canonical" href={defaultHref} />
+    {alternates.map((alt) => <link rel="alternate" hreflang={alt.locale} href={alt.href} />)}
+    <link rel="alternate" hreflang="x-default" href={defaultHref} />
 
-<script>
-  import "../scripts/app";
-</script>
+    <title>Jhon Tequia</title>
+
+    <script is:inline define:vars={{ enPath, esPath }}>
+      var lang = (navigator.language || "").toLowerCase();
+      var target = lang.indexOf("es") === 0 ? esPath : enPath;
+      location.replace(target);
+    </script>
+
+    <noscript>
+      <meta http-equiv="refresh" content={`0;url=${defaultPath}`} />
+    </noscript>
+  </head>
+
+  <body>
+    <noscript>
+      <p>
+        <a href={esPath}>Continuar en español</a> · <a href={enPath}>Continue in English</a>
+      </p>
+    </noscript>
+  </body>
+</html>

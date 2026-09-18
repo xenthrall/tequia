@@ -1,7 +1,17 @@
 ---
-import { projects, type Project } from "../data/projects";
+import { getProjects, type Project } from "../data/projects";
 import { renderBrandIcon } from "../icons/brands";
 import { uiIcons } from "../icons/ui";
+import { getStrings } from "../i18n/strings";
+import type { Locale } from "../i18n/config";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const projects = getProjects(locale);
+const strings = getStrings(locale);
 
 function cardClasses(project: Project, isLink: boolean): string {
   return [
@@ -18,8 +28,8 @@ function cardClasses(project: Project, isLink: boolean): string {
 }
 ---
 
-<section class="mt-8" aria-label="Proyectos">
-  <h2 class="mb-3 text-xs font-semibold uppercase tracking-wide text-[var(--soft)]">Proyectos</h2>
+<section class="mt-8" aria-label={strings.sections.projects}>
+  <h2 class="mb-3 text-xs font-semibold uppercase tracking-wide text-[var(--soft)]">{strings.sections.projects}</h2>
 
   <div class="grid grid-cols-1 items-stretch gap-3 sm:grid-cols-2">
     {
@@ -38,12 +48,12 @@ function cardClasses(project: Project, isLink: boolean): string {
               {project.featured && (
                 <span
                   class="shrink-0 text-amber-400 drop-shadow-[0_0_5px_rgba(250,204,21,0.45)]"
-                  title="Proyecto destacado"
+                  title={strings.projects.featured}
                 >
                   <svg viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4" aria-hidden="true" focusable="false">
                     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
                   </svg>
-                  <span class="sr-only">Proyecto destacado</span>
+                  <span class="sr-only">{strings.projects.featured}</span>
                 </span>
               )}
             </div>
@@ -68,7 +78,7 @@ function cardClasses(project: Project, isLink: boolean): string {
 
               {project.url && (
                 <span class="inline-flex w-fit shrink-0 items-center gap-1.5 rounded-full bg-[rgba(var(--accent-rgb),0.14)] px-3 py-1.5 text-xs font-semibold text-[var(--accent)] transition duration-200 group-hover:gap-2 group-hover:bg-[rgba(var(--accent-rgb),0.22)]">
-                  Ver proyecto
+                  {strings.projects.viewProject}
                   <span
                     aria-hidden="true"
                     class="transition-transform duration-200 group-hover:translate-x-0.5"

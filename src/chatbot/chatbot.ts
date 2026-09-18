@@ -1,5 +1,7 @@
 import { respond } from "./chatbot-engine";
-import { openingQuickReplies } from "./chatbot-data";
+import { getChatbotData } from "./chatbot-data";
+import { getChatCopy } from "./chatbot-copy";
+import type { Locale } from "../i18n/config";
 import {
   mountChatWidget,
   appendMessage,
@@ -12,34 +14,33 @@ import {
   setSendEnabled,
 } from "./chatbot-ui";
 
-async function handleUserMessage(rawMessage: string): Promise<void> {
-  const message = rawMessage.trim();
-  if (!message) return;
+export function initChatbot(locale: Locale): void {
+  const data = getChatbotData(locale);
+  const copy = getChatCopy(locale);
 
-  appendMessage({ role: "user", text: message });
+  async function handleUserMessage(rawMessage: string): Promise<void> {
+    const message = rawMessage.trim();
+    if (!message) return;
 
-  const typingIndicator = showTypingIndicator();
-  const reply = await respond(message);
-  removeNode(typingIndicator);
+    appendMessage({ role: "user", text: message });
 
-  appendMessage({ role: "bot", text: reply.text, links: reply.links });
+    const typingIndicator = showTypingIndicator();
+    const reply = await respond(message, data);
+    removeNode(typingIndicator);
 
-  if (reply.quickReplies?.length) {
-    appendQuickReplies(reply.quickReplies, handleUserMessage);
+    appendMessage({ role: "bot", text: reply.text, links: reply.links });
+
+    if (reply.quickReplies?.length) {
+      appendQuickReplies(reply.quickReplies, handleUserMessage);
+    }
   }
-}
 
-function showWelcomeMessage(): void {
-  appendMessage({
-    role: "bot",
-    text: "Hola, soy el asistente de Jhon. Pregúntame sobre sus proyectos, experiencia, tecnologías o formas de contacto.",
-  });
+  function showWelcomeMessage(): void {
+    appendMessage({ role: "bot", text: copy.welcomeMessage });
+    appendQuickReplies(data.openingQuickReplies, handleUserMessage);
+  }
 
-  appendQuickReplies(openingQuickReplies, handleUserMessage);
-}
-
-export function initChatbot(): void {
-  const els = mountChatWidget();
+  const els = mountChatWidget(copy);
   let hasGreeted = false;
 
   function toggle() {

@@ -1,0 +1,14 @@
+---
+import PageShell from "../../layouts/PageShell.astro";
+import ServicesContent from "../../components/ServicesContent.astro";
+import { getServices } from "../../data/services";
+import { getProfile } from "../../data/profile";
+
+const locale = "en" as const;
+const services = getServices(locale);
+const profile = getProfile(locale);
+---
+
+<PageShell locale={locale} title={`${profile.name} — Services`} description={services.intro}>
+  <ServicesContent locale={locale} />
+</PageShell>

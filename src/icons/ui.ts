@@ -1,5 +1,7 @@
 import tablerPlayerPlay from "@tabler/icons/outline/player-play.svg?raw";
 import tablerPlayerPause from "@tabler/icons/outline/player-pause.svg?raw";
+import tablerLanguage from "@tabler/icons/outline/language.svg?raw";
+import tablerArrowLeft from "@tabler/icons/outline/arrow-left.svg?raw";
 
 // Los SVG de @tabler/icons traen width/height fijos (24) y sin
 // aria-hidden; los adaptamos al mismo patrón que el resto de estos
@@ -65,4 +67,6 @@ export const uiIcons = {
   // que reutilizar el ícono de nota musical del botón real.
   playerPlay: fromTabler(tablerPlayerPlay),
   playerPause: fromTabler(tablerPlayerPause),
+  language: fromTabler(tablerLanguage),
+  arrowLeft: fromTabler(tablerArrowLeft),
 };

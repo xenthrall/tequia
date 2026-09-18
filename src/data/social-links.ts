@@ -9,6 +9,8 @@ export interface SocialLink {
 // Iconos de redes sociales mostrados en la cabecera del perfil.
 // Para agregar una red social nueva, importa su icono de simple-icons
 // y agrega un objeto { name, url, icon } a este arreglo.
+// TODO(docs/vision.md §12): agregar LinkedIn (siLinkedin) en cuanto el
+// perfil esté activo — es clave para la audiencia de reclutadores.
 export const socialLinks: SocialLink[] = [
   {
     name: "Instagram",
