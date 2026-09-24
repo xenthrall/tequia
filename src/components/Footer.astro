@@ -1,6 +1,5 @@
 ---
 import { getProfile } from "../data/profile";
-import { getStrings } from "../i18n/strings";
 import type { Locale } from "../i18n/config";
 
 interface Props {
@@ -9,18 +8,10 @@ interface Props {
 
 const { locale } = Astro.props;
 const profile = getProfile(locale);
-const strings = getStrings(locale);
 const year = new Date().getFullYear();
 ---
 
-<footer class="mt-9 flex flex-col items-center pb-[14px] text-center text-[0.7rem] text-[var(--muted)] sm:mt-[46px] sm:pb-0">
-  <p class="m-0">© {year} {profile.name}</p>
-
-  <div class="mt-2 flex gap-[7px]">
-    <a href="#" class="text-[var(--soft)] no-underline hover:text-[var(--muted)]">{strings.footer.privacy}</a>
-    <span>•</span>
-    <a href="#" class="text-[var(--soft)] no-underline hover:text-[var(--muted)]">{strings.footer.terms}</a>
-  </div>
-
-  <span class="mt-3 text-[0.72rem] font-[650] tracking-[0.08em] text-[var(--soft)]">tequia.dev</span>
+<footer class="flex flex-wrap justify-between gap-2 px-1 pb-[76px] pt-[18px] sm:pb-2">
+  <span class="eyebrow">© {year} {profile.name}</span>
+  <span class="eyebrow">tequia.dev</span>
 </footer>

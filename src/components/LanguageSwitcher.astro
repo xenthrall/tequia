@@ -1,7 +1,6 @@
 ---
 import { locales, localizedPath, type Locale } from "../i18n/config";
 import { getStrings } from "../i18n/strings";
-import { uiIcons } from "../icons/ui";
 
 interface Props {
   locale: Locale;
@@ -13,23 +12,24 @@ const strings = getStrings(locale);
 
 <details class="relative">
   <summary
-    class="grid h-10 w-10 cursor-pointer list-none place-items-center rounded-full border border-[var(--border)] bg-[var(--card)] text-[var(--text)] backdrop-blur-[14px] transition duration-200 marker:content-none hover:-translate-y-0.5 hover:border-white/20 hover:bg-[var(--card-hover)] active:scale-[0.94] sm:h-[42px] sm:w-[42px] [&::-webkit-details-marker]:hidden [&_svg]:h-[19px] [&_svg]:w-[19px]"
+    class="cursor-pointer list-none rounded-full border border-[var(--border)] px-3 py-[7px] font-mono text-[0.72rem] font-medium uppercase leading-[1.4] text-[var(--text)] transition duration-150 marker:content-none hover:border-[var(--text)] [&::-webkit-details-marker]:hidden"
     aria-label={strings.header.languageSwitcher}
   >
-    <Fragment set:html={uiIcons.language} />
+    {locale}
   </summary>
 
-  <div class="absolute left-1/2 top-[calc(100%+8px)] z-10 min-w-[140px] -translate-x-1/2 overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--card)] shadow-[0_10px_35px_rgba(0,0,0,0.25)] backdrop-blur-xl">
+  <div class="absolute right-0 top-[calc(100%+8px)] z-10 min-w-[140px] overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--card)] shadow-[0_14px_40px_rgba(0,0,0,0.18)]">
     {
       locales.map((l) => {
         const href = localizedPath(Astro.url.pathname, l.code);
         return (
           <a
             href={href}
+            lang={l.htmlLang}
             class:list={[
               "block px-4 py-2.5 text-sm no-underline transition duration-150",
               l.code === locale
-                ? "bg-[rgba(var(--accent-rgb),0.16)] font-semibold text-[var(--accent)]"
+                ? "bg-[var(--accent-soft)] font-semibold text-[var(--accent)]"
                 : "text-[var(--text)] hover:bg-[var(--card-hover)]",
             ]}
           >

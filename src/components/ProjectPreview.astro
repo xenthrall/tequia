@@ -1,0 +1,84 @@
+---
+// Miniaturas ilustrativas (decorativas) de la interfaz de cada proyecto.
+import { getStrings } from "../i18n/strings";
+import type { ProjectPreview } from "../data/projects";
+import type { Locale } from "../i18n/config";
+
+interface Props {
+  locale: Locale;
+  type: ProjectPreview;
+}
+
+const { locale, type } = Astro.props;
+const vault = getStrings(locale).projects.vaultPreview;
+
+const dashboardBars = [38, 55, 46, 70, 62, 92, 74];
+// 1 = módulo activo, 2 = módulo núcleo, 0 = espacio libre.
+const moduleCells = [1, 0, 1, 2, 1, 0, 0, 1, 2, 1, 0, 1];
+
+const rowClass =
+  "grid grid-cols-[26px_1fr_auto] items-center gap-2.5 rounded-[10px] border border-[var(--border)] bg-[var(--card)] px-2.5 py-2 text-[0.82rem]";
+---
+
+{
+  type === "vault" && (
+    <div class="my-1 grid flex-1 content-start gap-1.5 rounded-2xl border border-[var(--border)] bg-[var(--background)] p-3" aria-hidden="true">
+      <div class="flex items-center justify-between px-1 pb-1.5">
+        <span class="flex items-center gap-1.5 text-[0.78rem] font-medium text-[var(--text)]">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-3.5 w-3.5 text-[var(--accent)]">
+            <rect x="5" y="11" width="14" height="10" rx="2" />
+            <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+          </svg>
+          {vault.vault}
+        </span>
+        <span class="eyebrow">AES-256</span>
+      </div>
+      {vault.items.map((item, index) => (
+        <div class={rowClass}>
+          <i class="block h-[26px] w-[26px] rounded-[7px] bg-[var(--accent-soft)]" />
+          <b class="font-medium">{item}</b>
+          <code class="font-mono text-[0.75rem] tracking-[0.1em] text-[var(--muted)]">{"•".repeat(10 - index * 2)}</code>
+        </div>
+      ))}
+      <div class="flex items-center justify-between px-1 pb-1.5 pt-2.5">
+        <span class="text-[0.78rem] font-medium text-[var(--text)]">{vault.finance}</span>
+        <span class="eyebrow">{vault.financeHint}</span>
+      </div>
+      <div class={rowClass}>
+        <i class="block h-[26px] w-[26px] rounded-[7px] bg-[var(--accent-soft)]" />
+        <b class="font-medium">{vault.report}</b>
+        <code class="font-mono text-[0.75rem] text-[var(--muted)]">PDF · XLSX</code>
+      </div>
+    </div>
+  )
+}
+
+{
+  type === "dashboard" && (
+    <div class="my-1 flex h-16 items-end gap-[5px]" aria-hidden="true">
+      {dashboardBars.map((height, index) => (
+        <i
+          class:list={["block flex-1 rounded-[4px_4px_2px_2px]", index === 5 ? "bg-[var(--accent)]" : "bg-[var(--accent-soft)]"]}
+          style={`height: ${height}%`}
+        />
+      ))}
+    </div>
+  )
+}
+
+{
+  type === "modules" && (
+    <div class="my-1 grid grid-cols-12 gap-[5px]" aria-hidden="true">
+      {moduleCells.map((cell) => (
+        <i
+          class:list={[
+            "block aspect-square rounded-[5px]",
+            cell === 2 && "bg-[var(--accent)]",
+            cell === 1 && "bg-[var(--accent-soft)]",
+            cell === 0 && "border border-[var(--border)]",
+          ]}
+        />
+      ))}
+    </div>
+  )
+}

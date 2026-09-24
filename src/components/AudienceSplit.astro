@@ -1,7 +1,6 @@
 ---
 import { getStrings } from "../i18n/strings";
-import { uiIcons } from "../icons/ui";
-import type { Locale } from "../i18n/config";
+import { localizedPath, type Locale } from "../i18n/config";
 
 interface Props {
   locale: Locale;
@@ -10,44 +9,48 @@ interface Props {
 const { locale } = Astro.props;
 const strings = getStrings(locale);
 
+// La ruta de negocio va invertida para que sea lo primero que vea un cliente.
 const cards = [
   {
-    href: `/${locale}/services/`,
-    icon: uiIcons.building,
+    href: localizedPath("/services/", locale),
+    eyebrow: strings.header.nav.services,
     title: strings.audienceSplit.business.title,
     description: strings.audienceSplit.business.description,
     cta: strings.audienceSplit.business.cta,
+    inverse: true,
   },
   {
-    href: `/${locale}/hire-me/`,
-    icon: uiIcons.userSearch,
+    href: localizedPath("/hire-me/", locale),
+    eyebrow: strings.header.nav.hireMe,
     title: strings.audienceSplit.recruiter.title,
     description: strings.audienceSplit.recruiter.description,
     cta: strings.audienceSplit.recruiter.cta,
+    inverse: false,
   },
 ];
 ---
 
-<section class="mt-8" aria-label={strings.audienceSplit.eyebrow}>
-  <h2 class="mb-3 text-xs font-semibold uppercase tracking-wide text-[var(--soft)]">{strings.audienceSplit.eyebrow}</h2>
-
-  <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+<section class="@container mt-3" aria-label={strings.audienceSplit.eyebrow}>
+  <div class="grid grid-cols-1 gap-3 @2xl:grid-cols-2">
     {
       cards.map((card) => (
-        <a
-          href={card.href}
-          class="group flex flex-col gap-2 rounded-2xl border border-[var(--border)] bg-[var(--card)] p-5 text-inherit no-underline shadow-[0_10px_35px_rgba(0,0,0,0.12)] backdrop-blur-xl transition duration-200 hover:-translate-y-0.5 hover:border-[rgba(var(--accent-rgb),0.35)] hover:bg-[var(--card-hover)]"
-        >
-          <span
-            class="grid h-11 w-11 place-items-center rounded-xl bg-[rgba(var(--accent-rgb),0.14)] text-[var(--accent)] [&_svg]:h-[22px] [&_svg]:w-[22px]"
-            aria-hidden="true"
-            set:html={card.icon}
-          />
-          <h3 class="text-sm font-semibold text-[var(--text)]">{card.title}</h3>
-          <p class="text-xs leading-relaxed text-[var(--muted)]">{card.description}</p>
-          <span class="mt-2 inline-flex w-fit items-center gap-1.5 rounded-full bg-[rgba(var(--accent-rgb),0.14)] px-3 py-1.5 text-xs font-semibold text-[var(--accent)] transition duration-200 group-hover:gap-2 group-hover:bg-[rgba(var(--accent-rgb),0.22)]">
+        <a href={card.href} class:list={["tile group flex flex-col gap-2.5", card.inverse && "tile-inverse hover:!border-[var(--accent)]"]}>
+          <span class:list={["eyebrow", card.inverse && "!text-[var(--on-inverse-muted)]"]}>{card.eyebrow}</span>
+
+          <h2 class="display m-0 mt-1.5 text-[clamp(1.8rem,3.6vw,2.6rem)] leading-[1.02] tracking-[-0.025em] group-hover:italic">
+            {card.title}
+          </h2>
+
+          <p class:list={["text-[0.95rem]", card.inverse ? "text-[var(--on-inverse-muted)]" : "text-[var(--muted)]"]}>{card.description}</p>
+
+          <span class="mt-auto flex items-center justify-between pt-[18px] text-[0.9rem] font-semibold">
             {card.cta}
-            <span aria-hidden="true" class="transition-transform duration-200 group-hover:translate-x-0.5">↗</span>
+            <span
+              aria-hidden="true"
+              class="grid h-[38px] w-[38px] place-items-center rounded-full border border-current transition-transform duration-200 group-hover:-rotate-45"
+            >
+              →
+            </span>
           </span>
         </a>
       ))

@@ -14,14 +14,8 @@ const { locale, title, description } = Astro.props;
 ---
 
 <Layout locale={locale} title={title} description={description}>
-  <main class="page-shell relative isolate min-h-screen overflow-hidden">
-    <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
-      <div class="absolute left-1/2 top-[-250px] h-[420px] w-[420px] -translate-x-1/2 rounded-full bg-[#8b5cf6] opacity-[0.18] blur-[100px]"></div>
-      <div class="absolute bottom-[-180px] right-[-260px] h-[420px] w-[420px] rounded-full bg-[#2563eb] opacity-[0.18] blur-[100px]"></div>
-      <div class="grid-overlay"></div>
-    </div>
-
-    <div class="mx-auto w-[min(100%-24px,520px)] pb-[42px] pt-4 sm:w-[min(100%-32px,680px)] sm:pt-6">
+  <main class="min-h-screen bg-[var(--background)] px-[14px] pb-8 pt-3 sm:px-6 sm:pt-4">
+    <div class="mx-auto max-w-[1180px]">
       <Header locale={locale} />
       <slot />
       <Footer locale={locale} />

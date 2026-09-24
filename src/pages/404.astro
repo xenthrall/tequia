@@ -27,6 +27,13 @@ const esHome = localizedPath("/", "es");
     <link rel="icon" type="image/svg+xml" href={withBase("favicon.svg")} />
     <link rel="alternate icon" href={withBase("favicon.ico")} />
 
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=Geist:wght@400..600&family=JetBrains+Mono:wght@500&display=swap"
+    />
+
     <title>404 — Jhon Tequia</title>
 
     <style>
@@ -45,7 +52,9 @@ const esHome = localizedPath("/", "es");
 
     <script is:inline>
       try {
-        if (localStorage.getItem("theme") === "light") {
+        var storedTheme = localStorage.getItem("theme");
+        var prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
+        if (storedTheme === "light" || (!storedTheme && prefersLight)) {
           document.documentElement.classList.add("light-mode");
         }
       } catch {}
@@ -57,17 +66,12 @@ const esHome = localizedPath("/", "es");
   </head>
 
   <body>
-    <main class="page-shell relative isolate flex min-h-screen items-center justify-center overflow-hidden px-6 py-10">
-      <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
-        <div class="absolute left-1/2 top-[-250px] h-[420px] w-[420px] -translate-x-1/2 rounded-full bg-[#8b5cf6] opacity-[0.18] blur-[100px]"></div>
-        <div class="absolute bottom-[-180px] right-[-260px] h-[420px] w-[420px] rounded-full bg-[#2563eb] opacity-[0.18] blur-[100px]"></div>
-        <div class="grid-overlay"></div>
-      </div>
+    <main class="flex min-h-screen items-center justify-center bg-[var(--background)] px-[14px] py-10">
 
       <div class="w-[min(100%,440px)]">
         <header class="mb-4 flex justify-center">
           <button
-            class="grid h-10 w-10 place-items-center rounded-full border border-[var(--border)] bg-[var(--card)] text-[var(--text)] backdrop-blur-[14px] transition duration-200 hover:-translate-y-0.5 hover:border-white/20 hover:bg-[var(--card-hover)] active:scale-[0.94] [&_svg]:h-[19px] [&_svg]:w-[19px]"
+            class="grid h-9 w-9 place-items-center rounded-full text-[var(--muted)] transition duration-150 hover:bg-[var(--card)] hover:text-[var(--text)] active:scale-[0.94] [&_svg]:h-[18px] [&_svg]:w-[18px]"
             type="button"
             id="theme-toggle"
             aria-label="Toggle appearance / Cambiar apariencia"
@@ -76,22 +80,22 @@ const esHome = localizedPath("/", "es");
           </button>
         </header>
 
-        <div class="rounded-2xl border border-[var(--border)] bg-[var(--card)] px-6 py-10 text-center shadow-[0_10px_35px_rgba(0,0,0,0.12)] backdrop-blur-xl sm:px-10">
-          <span class="mx-auto mb-2 inline-flex h-[58px] w-[66px] drop-shadow-[0_0_18px_rgba(139,92,246,0.5)]" aria-hidden="true">
+        <div class="tile px-6 py-10 text-center sm:px-10">
+          <span class="mx-auto mb-2 inline-flex h-[58px] w-[66px]" aria-hidden="true">
             <Fragment set:html={renderMascotIcon()} />
           </span>
 
-          <p class="text-[clamp(3.5rem,16vw,5.5rem)] font-[800] leading-none tracking-[-0.04em] text-[var(--accent)]">404</p>
+          <p class="display text-[clamp(4rem,18vw,6.5rem)] font-[300] italic leading-none text-[var(--accent)]">404</p>
 
           <div data-locale-content="en">
-            <h1 class="mt-3 text-lg font-semibold text-[var(--text)]">Page not found</h1>
+            <h1 class="mt-3 font-serif text-2xl font-normal text-[var(--text)]">Page not found</h1>
             <p class="mx-auto mt-2 max-w-[300px] text-[0.86rem] leading-relaxed text-[var(--muted)]">
               The page you're looking for doesn't exist or was moved.
             </p>
           </div>
 
           <div data-locale-content="es">
-            <h1 class="mt-3 text-lg font-semibold text-[var(--text)]">Página no encontrada</h1>
+            <h1 class="mt-3 font-serif text-2xl font-normal text-[var(--text)]">Página no encontrada</h1>
             <p class="mx-auto mt-2 max-w-[300px] text-[0.86rem] leading-relaxed text-[var(--muted)]">
               La página que buscas no existe o fue movida.
             </p>
@@ -100,7 +104,7 @@ const esHome = localizedPath("/", "es");
           <div class="mt-6 flex justify-center" data-locale-content="en">
             <a
               href={enHome}
-              class="inline-flex items-center gap-2 rounded-xl bg-gradient-to-br from-[#a78bfa] to-[#6d28d9] px-5 py-2.5 text-sm font-medium text-white no-underline transition hover:-translate-y-0.5 [&_svg]:h-4 [&_svg]:w-4"
+              class="inline-flex items-center gap-2 rounded-full bg-[var(--text)] px-5 py-3 text-sm font-semibold text-[var(--background)] no-underline transition hover:bg-[var(--accent)] hover:text-white [&_svg]:h-4 [&_svg]:w-4"
             >
               <Fragment set:html={uiIcons.arrowLeft} />
               Back to home
@@ -110,7 +114,7 @@ const esHome = localizedPath("/", "es");
           <div class="mt-6 flex justify-center" data-locale-content="es">
             <a
               href={esHome}
-              class="inline-flex items-center gap-2 rounded-xl bg-gradient-to-br from-[#a78bfa] to-[#6d28d9] px-5 py-2.5 text-sm font-medium text-white no-underline transition hover:-translate-y-0.5 [&_svg]:h-4 [&_svg]:w-4"
+              class="inline-flex items-center gap-2 rounded-full bg-[var(--text)] px-5 py-3 text-sm font-semibold text-[var(--background)] no-underline transition hover:bg-[var(--accent)] hover:text-white [&_svg]:h-4 [&_svg]:w-4"
             >
               <Fragment set:html={uiIcons.arrowLeft} />
               Volver al inicio

@@ -1,7 +1,6 @@
-// Mascota del asistente: la misma ilustración pixel-art del favicon y de la
-// tarjeta destacada de Instagram (ver .pixel-head/.pixel-eye/.pixel-mouth en
-// global.css), reconstruida como SVG escalable para reutilizarla como
-// identidad visual de "Jhon's Assistant" en cualquier tamaño.
+// Mascota del sitio: la misma ilustración pixel-art del favicon, como SVG
+// escalable. Se usa en "Jhon's Assistant", en el bloque de la mascota de la
+// home (About.astro) y en la página 404.
 let instances = 0;
 
 export function renderMascotIcon(): string {

@@ -1,0 +1,58 @@
+---
+import { getHireMe } from "../data/hire-me";
+import { getStrings } from "../i18n/strings";
+import { renderMascotIcon } from "../icons/mascot";
+import SectionHeading from "./SectionHeading.astro";
+import type { Locale } from "../i18n/config";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const hireMe = getHireMe(locale);
+const strings = getStrings(locale);
+const [latestExperience] = hireMe.experience;
+---
+
+<section class="@container" aria-labelledby="about-heading">
+  <SectionHeading
+    id="about-heading"
+    lead={strings.about.heading.lead}
+    emphasis={strings.about.heading.emphasis}
+    trail={strings.about.heading.trail}
+    meta={strings.about.eyebrow}
+  />
+
+  <div class="grid grid-cols-1 gap-3 @2xl:grid-cols-3 @4xl:grid-cols-12">
+    {
+      latestExperience && (
+        <div class="tile flex flex-col gap-2.5 @2xl:col-span-3 @4xl:col-span-5">
+          <span class="eyebrow">{strings.hireMe.experience}</span>
+          <h3 class="m-0 font-serif text-[1.35rem] font-normal leading-[1.15]">{latestExperience.role}</h3>
+          <span class="text-[0.9rem] font-semibold text-[var(--text)]">{latestExperience.organization}</span>
+          <p class="text-[0.95rem] text-[var(--muted)]">{latestExperience.description}</p>
+        </div>
+      )
+    }
+
+    <div class="tile flex flex-col gap-3 @2xl:col-span-2 @4xl:col-span-4">
+      <span class="eyebrow">{strings.hireMe.stack}</span>
+      {
+        hireMe.stackGroups.map((group) => (
+          <div class="grid gap-1">
+            <span class="eyebrow">{group.label}</span>
+            <span class="text-[0.86rem] text-[var(--text)]">{group.items.join(" · ")}</span>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="tile group hidden place-items-center border-transparent bg-[var(--accent-soft)] @2xl:grid @4xl:col-span-3" aria-hidden="true">
+      <span
+        class="block h-[92px] w-[106px] transition-transform duration-300 ease-[cubic-bezier(.2,.8,.2,1)] group-hover:-translate-y-1 group-hover:scale-105"
+        set:html={renderMascotIcon()}
+      />
+    </div>
+  </div>
+</section>
