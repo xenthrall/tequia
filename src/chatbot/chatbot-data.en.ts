@@ -72,17 +72,17 @@ export const chatbotData: ChatbotData = {
         "Atlas is a base platform focused on building modular, highly extensible systems. It serves as the technological foundation for different products, with a focus on modular architecture, extensibility, reuse, multi-tenancy and business systems.",
     },
     {
-      id: "nexo",
-      keywords: ["nexo", "education platform", "academic management platform"],
+      id: "cafe-del-tiempo",
+      keywords: ["cafe del tiempo", "cafe", "vault", "passwords", "personal finance"],
       response:
-        "Nexo is a platform focused on academic and administrative management for technical education institutions. It's built on top of Atlas as a base platform, and one of its first goals is an MVP for document management and coordination with secondary education.",
+        "Café del Tiempo is a self-hosted, modular personal suite for safeguarding the information that matters most. It includes an encrypted vault for credentials, secrets and confidential notes, plus a personal finance module. It's built with Laravel, Filament and Tailwind CSS, runs on PostgreSQL in production (or SQLite when self-hosted), deploys with Docker and is open source (MIT). Later on, Jhon plans to let anyone who doesn't want to self-host use the production instance he maintains for free.",
     },
     {
       id: "projects",
       keywords: ["projects", "what is he building", "what is he working on", "what is he creating"],
       response:
-        "Jhon is currently building Atlas, a modular base platform, and Nexo, an academic and administrative management system for training institutions.",
-      quickReplies: ["Tell me about Atlas", "What is Nexo?"],
+        "Jhon is currently building Atlas, a modular base platform, and Café del Tiempo, a self-hosted personal suite with an encrypted vault and personal finance.",
+      quickReplies: ["Tell me about Atlas", "What is Café del Tiempo?"],
     },
     {
       id: "services",

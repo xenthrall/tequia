@@ -2,13 +2,14 @@ import {
   siPhp,
   siLaravel,
   siFilament,
-  siLivewire,
   siTailwindcss,
   siReact,
   siTypescript,
   siVite,
   siSupabase,
   siPostgresql,
+  siSqlite,
+  siDocker,
 } from "simple-icons";
 import type { Project } from "./projects";
 
@@ -17,15 +18,18 @@ import type { Project } from "./projects";
 // `url` is optional and `featured: true` highlights the project visually.
 export const projects: Project[] = [
   {
-    title: "Nexo",
-    description: "Modular platform for education management.",
-    url: "https://nexo.tequia.dev/",
+    title: "Café del Tiempo",
+    description:
+      "Self-hosted, modular personal suite to protect what matters most: an encrypted vault for credentials and secrets, and personal finance.",
+    url: "https://cafe.tequia.dev/",
     technologies: [
       { name: "PHP", icon: siPhp },
       { name: "Laravel", icon: siLaravel },
       { name: "Filament", icon: siFilament },
-      { name: "Livewire", icon: siLivewire },
       { name: "Tailwind CSS", icon: siTailwindcss },
+      { name: "PostgreSQL", icon: siPostgresql },
+      { name: "SQLite", icon: siSqlite },
+      { name: "Docker", icon: siDocker },
     ],
     featured: true,
   },

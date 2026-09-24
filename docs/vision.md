@@ -19,7 +19,7 @@ Hoy el sitio no distingue entre ambos. Todo visitante ve lo mismo, sin importar 
 **Estructura actual de la home (de arriba a abajo):**
 1. `Header` — solo un botón de cambio de tema (claro/oscuro).
 2. `Profile` — avatar, nombre, rol (`"Software Developer · Laravel & PHP · Builder"`), descripción genérica, iconos de redes (Instagram, WhatsApp, GitHub).
-3. `Projects` — 3 proyectos (Nexo, Faro, Atlas) con stack técnico, sin métricas de impacto de negocio.
+3. `Projects` — 3 proyectos (Café del Tiempo, Faro, Atlas) con stack técnico, sin métricas de impacto de negocio.
 4. `Links` — estilo "linktree": Instagram, WhatsApp, GitHub.
 5. `Contact` — un único formulario genérico (nombre, correo, teléfono, mensaje vía Formspree) + botón de WhatsApp.
 6. `Footer` — copyright + enlaces "Privacy"/"Terms" que son placeholders (`href="#"`, no funcionales).
@@ -58,7 +58,7 @@ El resto de la home se simplifica: menos "linktree personal" (Instagram puede ba
 - Encabezado tipo CV: rol objetivo, años de experiencia, disponibilidad (full-time / freelance / ambos) y modalidad (remoto, híbrido, ubicación).
 - Timeline de experiencia (ej. Operación Sistémica S.A.S. como Full Stack Laravel).
 - Stack técnico agrupado por relevancia (backend, frontend, infra).
-- Proyectos como evidencia técnica (Nexo, Faro, Atlas) con enfoque en arquitectura/decisiones técnicas.
+- Proyectos como evidencia técnica (Café del Tiempo, Faro, Atlas) con enfoque en arquitectura/decisiones técnicas.
 - CV descargable en PDF.
 - Enlace a LinkedIn (falta hoy — ver sección 7).
 - Un único CTA claro: agendar llamada / escribir directamente para procesos de contratación.
