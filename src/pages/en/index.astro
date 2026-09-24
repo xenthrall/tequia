@@ -1,9 +1,9 @@
 ---
 import PageShell from "../../layouts/PageShell.astro";
-import Profile from "../../components/Profile.astro";
+import HomeHero from "../../components/HomeHero.astro";
 import AudienceSplit from "../../components/AudienceSplit.astro";
 import Projects from "../../components/Projects.astro";
-import Links from "../../components/Links.astro";
+import About from "../../components/About.astro";
 import Contact from "../../components/Contact.astro";
 import { getProfile } from "../../data/profile";
 
@@ -12,9 +12,9 @@ const profile = getProfile(locale);
 ---
 
 <PageShell locale={locale} title={`${profile.name} — ${profile.role}`} description={profile.description}>
-  <Profile locale={locale} />
+  <HomeHero locale={locale} />
   <AudienceSplit locale={locale} />
   <Projects locale={locale} />
-  <Links locale={locale} />
+  <About locale={locale} />
   <Contact locale={locale} />
 </PageShell>

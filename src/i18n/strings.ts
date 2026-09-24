@@ -5,6 +5,10 @@ export interface UiStrings {
     themeToggle: string;
     languageSwitcher: string;
     backToHome: string;
+    nav: { home: string; services: string; hireMe: string };
+  };
+  hero: {
+    clockLabel: string;
   };
   sections: {
     projects: string;
@@ -12,8 +16,21 @@ export interface UiStrings {
     contact: string;
   };
   projects: {
+    heading: { lead: string; emphasis: string };
+    countLabel: string;
     featured: string;
     viewProject: string;
+    vaultPreview: {
+      vault: string;
+      finance: string;
+      financeHint: string;
+      items: string[];
+      report: string;
+    };
+  };
+  about: {
+    heading: { lead: string; emphasis: string; trail: string };
+    eyebrow: string;
   };
   contact: {
     title: string;
@@ -39,10 +56,6 @@ export interface UiStrings {
     whatsappPrompt: string;
     whatsappButton: string;
   };
-  footer: {
-    privacy: string;
-    terms: string;
-  };
   audienceSplit: {
     eyebrow: string;
     business: { title: string; description: string; cta: string };
@@ -64,6 +77,10 @@ const en: UiStrings = {
     themeToggle: "Toggle appearance",
     languageSwitcher: "Change language",
     backToHome: "Back to home",
+    nav: { home: "Home", services: "Services", hireMe: "Hire me" },
+  },
+  hero: {
+    clockLabel: "Local time · Bogotá",
   },
   sections: {
     projects: "Projects",
@@ -71,8 +88,21 @@ const en: UiStrings = {
     contact: "Contact",
   },
   projects: {
+    heading: { lead: "What I'm", emphasis: "building" },
+    countLabel: "projects",
     featured: "Featured project",
     viewProject: "View project",
+    vaultPreview: {
+      vault: "Vault",
+      finance: "Finance",
+      financeHint: "Income · expenses",
+      items: ["Credential", "Confidential note", "Time capsule"],
+      report: "Monthly report",
+    },
+  },
+  about: {
+    heading: { lead: "A bit", emphasis: "more", trail: "about me" },
+    eyebrow: "Experience · stack",
   },
   contact: {
     title: "Have an idea? Let's talk.",
@@ -98,10 +128,6 @@ const en: UiStrings = {
     thankYouMessage: "Thanks for reaching out. I read every message carefully and will get back to you soon.",
     whatsappPrompt: "Prefer something more direct?",
     whatsappButton: "Chat on WhatsApp",
-  },
-  footer: {
-    privacy: "Privacy",
-    terms: "Terms",
   },
   audienceSplit: {
     eyebrow: "What are you looking for?",
@@ -132,6 +158,10 @@ const es: UiStrings = {
     themeToggle: "Cambiar apariencia",
     languageSwitcher: "Cambiar idioma",
     backToHome: "Volver al inicio",
+    nav: { home: "Inicio", services: "Servicios", hireMe: "Contratar" },
+  },
+  hero: {
+    clockLabel: "Hora local · Bogotá",
   },
   sections: {
     projects: "Proyectos",
@@ -139,8 +169,21 @@ const es: UiStrings = {
     contact: "Contacto",
   },
   projects: {
+    heading: { lead: "Lo que estoy", emphasis: "construyendo" },
+    countLabel: "proyectos",
     featured: "Proyecto destacado",
     viewProject: "Ver proyecto",
+    vaultPreview: {
+      vault: "Bóveda",
+      finance: "Finanzas",
+      financeHint: "Ingresos · gastos",
+      items: ["Credencial", "Nota confidencial", "Cápsula del tiempo"],
+      report: "Reporte del mes",
+    },
+  },
+  about: {
+    heading: { lead: "Un poco", emphasis: "más", trail: "de mí" },
+    eyebrow: "Experiencia · stack",
   },
   contact: {
     title: "¿Tienes una idea? Conversemos.",
@@ -166,10 +209,6 @@ const es: UiStrings = {
     thankYouMessage: "Gracias por escribirme. Leo cada mensaje con calma y te responderé muy pronto para conversar sobre tu idea.",
     whatsappPrompt: "¿Prefieres algo más directo?",
     whatsappButton: "Hablar por WhatsApp",
-  },
-  footer: {
-    privacy: "Privacidad",
-    terms: "Términos",
   },
   audienceSplit: {
     eyebrow: "¿Qué estás buscando?",

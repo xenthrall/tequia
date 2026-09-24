@@ -5,6 +5,9 @@ import { profile as es } from "./profile.es";
 export interface Profile {
   name: string;
   role: string;
+  // Título editorial de la home: `emphasis` se muestra en cursiva y color acento.
+  headline: { lead: string; emphasis: string };
+  location: string;
   description: string;
   avatar: string;
 }

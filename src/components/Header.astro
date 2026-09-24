@@ -12,31 +12,56 @@ const { locale } = Astro.props;
 const strings = getStrings(locale);
 
 const homePath = localizedPath("/", locale);
-const isHome = Astro.url.pathname === homePath;
 
-const iconButtonClasses =
-  "grid h-10 w-10 place-items-center rounded-full border border-[var(--border)] bg-[var(--card)] text-[var(--text)] backdrop-blur-[14px] transition duration-200 hover:-translate-y-0.5 hover:border-white/20 hover:bg-[var(--card-hover)] active:scale-[0.94] disabled:pointer-events-none disabled:cursor-default disabled:opacity-40 sm:h-[42px] sm:w-[42px] [&_svg]:h-[19px] [&_svg]:w-[19px] [&_svg]:animate-[icon-pop_260ms_ease]";
+const navLinks = [
+  { href: localizedPath("/services/", locale), label: strings.header.nav.services },
+  { href: localizedPath("/hire-me/", locale), label: strings.header.nav.hireMe },
+];
+
+const currentPath = Astro.url.pathname.replace(/\/?$/, "/");
+const isHome = currentPath === homePath;
 ---
 
-<header class:list={["mb-[14px] flex items-center gap-2.5 sm:mb-[18px]", isHome ? "justify-center" : "justify-between"]}>
-  {
-    !isHome && (
-      <a
-        href={homePath}
-        aria-label={strings.header.backToHome}
-        class="inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] bg-[var(--card)] py-2 pl-2.5 pr-3.5 text-xs font-medium text-[var(--text)] no-underline backdrop-blur-[14px] transition duration-200 hover:-translate-y-0.5 hover:border-white/20 hover:bg-[var(--card-hover)] [&_svg]:h-4 [&_svg]:w-4"
-      >
-        <Fragment set:html={uiIcons.arrowLeft} />
-        {strings.header.backToHome}
-      </a>
-    )
-  }
+<header class="flex items-center justify-between gap-3 pb-[18px] pt-2">
+  <a href={homePath} class="flex items-baseline gap-2.5 text-[var(--text)] no-underline" aria-label={strings.header.backToHome}>
+    <b class="font-serif text-[1.3rem] font-medium italic leading-none tracking-[-0.01em]">Jhon Tequia</b>
+    <span class="eyebrow hidden sm:inline">tequia.dev</span>
+  </a>
 
-  <div class="flex items-center gap-2.5">
-    <button class={iconButtonClasses} type="button" aria-label={strings.header.themeToggle} id="theme-toggle">
+  <nav class="flex items-center gap-1" aria-label="Main">
+    {
+      !isHome && (
+        <a
+          href={homePath}
+          class="mr-1 inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] bg-[var(--card)] py-[7px] pl-2.5 pr-3.5 text-[0.86rem] font-medium text-[var(--text)] no-underline transition duration-150 hover:border-[var(--text)] [&_svg]:h-4 [&_svg]:w-4"
+        >
+          <Fragment set:html={uiIcons.arrowLeft} />
+          {strings.header.nav.home}
+        </a>
+      )
+    }
+
+    {
+      navLinks.map((link) => (
+        <a
+          href={link.href}
+          aria-current={currentPath === link.href ? "page" : undefined}
+          class="hidden rounded-full px-3 py-[7px] text-[0.86rem] text-[var(--muted)] no-underline transition duration-150 hover:bg-[var(--card)] hover:text-[var(--text)] aria-[current=page]:text-[var(--text)] sm:block"
+        >
+          {link.label}
+        </a>
+      ))
+    }
+
+    <button
+      class="grid h-9 w-9 place-items-center rounded-full text-[var(--muted)] transition duration-150 hover:bg-[var(--card)] hover:text-[var(--text)] active:scale-[0.94] [&_svg]:h-[18px] [&_svg]:w-[18px] [&_svg]:animate-[icon-pop_260ms_ease]"
+      type="button"
+      aria-label={strings.header.themeToggle}
+      id="theme-toggle"
+    >
       <Fragment set:html={uiIcons.theme} />
     </button>
 
     <LanguageSwitcher locale={locale} />
-  </div>
+  </nav>
 </header>

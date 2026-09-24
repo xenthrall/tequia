@@ -15,10 +15,13 @@ import type { Project } from "./projects";
 
 // Projects shown in the projects section.
 // Each project requires { title, description, technologies }.
-// `url` is optional and `featured: true` highlights the project visually.
+// `url` is optional and `featured: true` shows it in the large dashboard tile.
 export const projects: Project[] = [
   {
     title: "Café del Tiempo",
+    kicker: "Featured project",
+    badge: "Open source · MIT",
+    preview: "vault",
     description:
       "Self-hosted, modular personal suite to protect what matters most: an encrypted vault for credentials and secrets, and personal finance.",
     url: "https://cafe.tequia.dev/",
@@ -36,6 +39,9 @@ export const projects: Project[] = [
 
   {
     title: "Faro",
+    kicker: "Business management",
+    badge: "Demo",
+    preview: "dashboard",
     description: "Management system for small businesses, built on minimal-cost infrastructure.",
     url: "https://xenthrall.github.io/faro/public",
     technologies: [
@@ -46,11 +52,13 @@ export const projects: Project[] = [
       { name: "PostgreSQL", icon: siPostgresql },
       { name: "Tailwind CSS", icon: siTailwindcss },
     ],
-    featured: true,
   },
 
   {
     title: "Atlas",
+    kicker: "Base platform",
+    badge: "In development",
+    preview: "modules",
     description: "Modular platform that serves as a base to build projects, ideas and tools.",
     url: null,
     technologies: [

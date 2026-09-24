@@ -1,0 +1,20 @@
+---
+// Encabezado editorial de sección: título en serif con una palabra
+// destacada en cursiva y una etiqueta técnica opcional a la derecha.
+interface Props {
+  id?: string;
+  lead: string;
+  emphasis?: string;
+  trail?: string;
+  meta?: string;
+}
+
+const { id, lead, emphasis, trail, meta } = Astro.props;
+---
+
+<div class="flex items-baseline justify-between gap-3 px-1 pb-3 pt-[26px]">
+  <h2 id={id} class="display m-0 text-[clamp(1.6rem,3.4vw,2.3rem)] leading-none tracking-[-0.02em] text-[var(--text)]">
+    {lead}{emphasis && <Fragment>{" "}<em>{emphasis}</em></Fragment>}{trail && ` ${trail}`}
+  </h2>
+  {meta && <span class="eyebrow shrink-0">{meta}</span>}
+</div>
