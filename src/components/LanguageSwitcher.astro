@@ -11,7 +11,7 @@ const { locale, localePaths } = Astro.props;
 const strings = getStrings(locale);
 ---
 
-<details class="relative">
+<details class="relative" data-dropdown>
   <summary
     class="cursor-pointer list-none rounded-full border border-[var(--border)] px-3 py-[7px] font-mono text-[0.72rem] font-medium uppercase leading-[1.4] text-[var(--text)] transition duration-150 marker:content-none hover:border-[var(--text)] [&::-webkit-details-marker]:hidden"
     aria-label={strings.header.languageSwitcher}

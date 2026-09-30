@@ -5,6 +5,7 @@ export interface UiStrings {
     themeToggle: string;
     languageSwitcher: string;
     backToHome: string;
+    menu: string;
     nav: { home: string; services: string; hireMe: string; notes: string };
   };
   hero: {
@@ -103,6 +104,7 @@ const en: UiStrings = {
     themeToggle: "Toggle appearance",
     languageSwitcher: "Change language",
     backToHome: "Back to home",
+    menu: "Menu",
     nav: { home: "Home", services: "Services", hireMe: "Hire me", notes: "Notes" },
   },
   hero: {
@@ -215,6 +217,7 @@ const es: UiStrings = {
     themeToggle: "Cambiar apariencia",
     languageSwitcher: "Cambiar idioma",
     backToHome: "Volver al inicio",
+    menu: "Menú",
     nav: { home: "Inicio", services: "Servicios", hireMe: "Contratar", notes: "Notas" },
   },
   hero: {

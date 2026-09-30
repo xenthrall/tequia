@@ -4,6 +4,7 @@ import tablerLanguage from "@tabler/icons/outline/language.svg?raw";
 import tablerArrowLeft from "@tabler/icons/outline/arrow-left.svg?raw";
 import tablerBuilding from "@tabler/icons/outline/building.svg?raw";
 import tablerUserSearch from "@tabler/icons/outline/user-search.svg?raw";
+import tablerMenu from "@tabler/icons/outline/menu-2.svg?raw";
 
 // Los SVG de @tabler/icons traen width/height fijos (24) y sin
 // aria-hidden; los adaptamos al mismo patrón que el resto de estos
@@ -28,7 +29,7 @@ export const uiIcons = {
     </svg>
   `,
   arrow: "↗",
-  menu: "⋮",
+  menu: fromTabler(tablerMenu),
   musicNote: `
     <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
       <path
