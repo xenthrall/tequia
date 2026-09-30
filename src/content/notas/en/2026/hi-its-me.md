@@ -1,6 +1,7 @@
 ---
 title: Hi, it's me
 description: Who I am, what I do, and why I'm opening this space to write.
+highlight: Before writing code, I already liked building things, taking them apart, modifying them and understanding how they worked.
 date: 2026-09-30
 tags: [personal]
 translationOf: es/hola-soy-yo

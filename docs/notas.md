@@ -30,6 +30,7 @@ src/content/notas/
 |---|---|---|
 | `title` | sí | Título de la nota. |
 | `description` | sí | 1–2 frases, máx. 220 caracteres. Se ve en el listado, en Google, en el RSS y al compartir. |
+| `highlight` | no | Una frase de la nota (máx. 200 caracteres) que se cita en el bloque "Última nota" de la home. Si falta, se muestra `description`. |
 | `date` | sí | `AAAA-MM-DD`. Ordena las notas y agrupa por año. |
 | `updated` | no | Fecha de una edición importante (va a los metadatos del artículo). |
 | `tags` | no | Temas, p.ej. `[desarrollo, carrera]`. Cada uno genera su página. Mayúsculas y tildes dan igual para la URL (`Reflexión` → `/etiquetas/reflexion/`), pero conviene reutilizar siempre la misma forma. |

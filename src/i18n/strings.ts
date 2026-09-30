@@ -9,6 +9,11 @@ export interface UiStrings {
   };
   hero: {
     clockLabel: string;
+    latestNote: string;
+    readNote: string;
+    // Qué estoy haciendo "probablemente" según la hora de Bogotá: cada frase
+    // aplica hasta la hora `until` (exclusiva, 0-24). Solo por diversión.
+    status: { until: number; text: string }[];
   };
   sections: {
     projects: string;
@@ -102,6 +107,17 @@ const en: UiStrings = {
   },
   hero: {
     clockLabel: "Local time · Bogotá",
+    latestNote: "Latest note",
+    readNote: "Read note",
+    status: [
+      { until: 6, text: "probably asleep (or debugging something)" },
+      { until: 9, text: "starting the day" },
+      { until: 13, text: "most likely coding" },
+      { until: 14, text: "having lunch" },
+      { until: 19, text: "building something" },
+      { until: 21, text: "learning something new" },
+      { until: 24, text: "maybe playing the piano" },
+    ],
   },
   sections: {
     projects: "Projects",
@@ -203,6 +219,17 @@ const es: UiStrings = {
   },
   hero: {
     clockLabel: "Hora local · Bogotá",
+    latestNote: "Última nota",
+    readNote: "Leer nota",
+    status: [
+      { until: 6, text: "seguramente durmiendo (o depurando algo)" },
+      { until: 9, text: "arrancando el día" },
+      { until: 13, text: "seguramente programando" },
+      { until: 14, text: "almorzando" },
+      { until: 19, text: "construyendo algo" },
+      { until: 21, text: "aprendiendo algo nuevo" },
+      { until: 24, text: "quizás tocando piano" },
+    ],
   },
   sections: {
     projects: "Proyectos",

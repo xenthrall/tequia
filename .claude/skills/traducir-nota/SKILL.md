@@ -15,7 +15,7 @@ Crea la versión en inglés de una nota escrita en español, siguiendo `docs/not
 3. **Traduce con la voz de Jhon**, no literal: primera persona, tono cercano y directo, frases naturales en inglés. Conserva la estructura (títulos, listas, énfasis), los bloques de código tal cual (traduce solo sus comentarios si aportan) y los nombres propios.
 4. **Adapta los enlaces internos** al inglés: `/es/notas/` → `/en/notes/`, `/es/notas/rss.xml` → `/en/notes/rss.xml`, `/es/<página>/` → `/en/<página>/`. Si enlaza otra nota en español que tiene traducción, apunta a la traducción.
 5. **Frontmatter** del archivo nuevo:
-   - `title` y `description` traducidos (`description` ≤ 220 caracteres).
+   - `title` y `description` traducidos (`description` ≤ 220 caracteres), y `highlight` si la original lo tiene: debe coincidir con la frase traducida en el cuerpo.
    - `date` igual a la original; `updated` solo si la original lo tiene.
    - `tags` traducidos, reutilizando los que ya existan en `src/content/notas/en/**` cuando signifiquen lo mismo (revisa antes con grep).
    - `translationOf: es/<slug-original>`.

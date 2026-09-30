@@ -1,6 +1,7 @@
 ---
 title: Hola, soy yo
 description: Quién soy, qué hago y por qué abro este espacio para escribir.
+highlight: Antes de escribir código ya me gustaba construir cosas, desmontarlas, modificarlas y entender cómo funcionaban.
 date: 2026-09-30
 tags: [personal]
 ---

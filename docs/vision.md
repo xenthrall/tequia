@@ -167,7 +167,8 @@ El resto de la home se simplifica: menos "linktree personal" (Instagram puede ba
 
 **Decisión (2026-09-30):** en vez de un blog de marketing, el sitio tiene una sección de **Notas**: ideas, aprendizajes y pensamientos que Jhon siente que vale la pena compartir, para público general.
 
-- **Sin calendario.** Se escribe cuando algo lo amerita. Por eso se llama "Notas" y no "Blog" (no promete frecuencia) y la home no muestra "última publicación" (no delata tiempo sin escribir).
+- **Sin calendario.** Se escribe cuando algo lo amerita. Por eso se llama "Notas" y no "Blog" (no promete frecuencia).
+- **Última nota en la home, sin fecha (2026-09-30).** El bloque que antes era solo el reloj de Bogotá ahora combina la hora, una frase según la hora ("seguramente programando", editable en `src/i18n/strings.ts` → `hero.status`) y la nota más reciente con una cita (`highlight`). La fecha no se muestra a propósito, para no delatar el tiempo entre notas. Sin notas publicadas, vuelve a ser solo el reloj.
 - **Fuera del embudo de conversión.** Se enlaza desde el `Header`, no desde `AudienceSplit`: humaniza el sitio sin restar foco a `/services` ni a `/hire-me`.
 - **Español primero, inglés por IA.** Jhon escribe en español; la versión en inglés se genera con el comando `/traducir-nota` (`.claude/skills/traducir-nota/`) y se revisa antes de publicar. Una nota sin traducción existe solo en `/es/notas/`. Las traducciones se marcan como tales ("Translated from Spanish").
 - **Rutas:** `/es/notas/` y `/en/notes/` (slug propio por idioma), con páginas por tema, paginación y RSS por idioma. SEO: canonical, hreflang solo entre versiones reales, `og:type=article` y JSON-LD `BlogPosting`.

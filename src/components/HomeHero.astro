@@ -3,6 +3,7 @@ import { getProfile } from "../data/profile";
 import { socialLinks } from "../data/social-links";
 import { getStrings } from "../i18n/strings";
 import { withBase } from "../lib/base-url";
+import { getNotes, notePath } from "../lib/notes";
 import type { Locale } from "../i18n/config";
 
 interface Props {
@@ -12,6 +13,10 @@ interface Props {
 const { locale } = Astro.props;
 const profile = getProfile(locale);
 const strings = getStrings(locale);
+
+// Bloque "última nota": la fecha no se muestra a propósito (ver docs/vision.md
+// §13, la home no debe delatar cuánto tiempo pasa entre notas).
+const [latestNote] = await getNotes(locale);
 ---
 
 <section class="@container">
@@ -38,7 +43,7 @@ const strings = getStrings(locale);
       </div>
     </div>
 
-    <figure class="tile relative m-0 flex min-h-[190px] flex-col justify-end overflow-hidden p-0 @3xl:col-span-4 @3xl:min-h-[240px]">
+    <figure class="tile relative col-span-2 m-0 flex min-h-[190px] flex-col justify-end overflow-hidden p-0 @3xl:col-span-4 @3xl:min-h-[240px]">
       <img
         src={withBase(profile.avatar)}
         alt={profile.name}
@@ -54,34 +59,78 @@ const strings = getStrings(locale);
       </figcaption>
     </figure>
 
-    <div class="tile flex flex-col justify-between gap-4 @3xl:col-span-4">
-      <p class="eyebrow">{strings.hero.clockLabel}</p>
-      <div class="flex flex-col items-start justify-between gap-1 @md:flex-row @md:items-end">
-        <span
-          data-bogota-clock
-          class="font-serif text-[clamp(2.3rem,5vw,3.4rem)] font-[350] leading-none tracking-[-0.03em] tabular-nums lining-nums"
+    {
+      latestNote ? (
+        <a
+          href={notePath(latestNote)}
+          class="tile group col-span-2 flex flex-col gap-4 @3xl:col-span-4"
+          data-home-clock
+          data-status={JSON.stringify(strings.hero.status)}
         >
-          --:--
-        </span>
-        <span class="eyebrow">UTC−5</span>
-      </div>
-    </div>
+          <p class="eyebrow flex flex-wrap items-baseline gap-x-1.5">
+            <span data-clock-time class="tabular-nums text-[var(--text)]">--:--</span>
+            <span>Bogotá</span>
+            <span aria-hidden="true">·</span>
+            <span data-clock-status class="normal-case tracking-normal">UTC−5</span>
+          </p>
+
+          <div class="flex flex-1 flex-col gap-2 border-t border-[var(--border)] pt-4">
+            <span class="eyebrow">{strings.hero.latestNote}</span>
+            <span class="font-serif text-[1.5rem] font-[380] leading-[1.1] tracking-[-0.02em] text-[var(--text)] transition-colors duration-150 group-hover:text-[var(--accent)]">
+              {latestNote.data.title}
+            </span>
+            <p class="line-clamp-3 font-serif text-[1rem] italic leading-[1.45] text-[var(--muted)]">
+              “{latestNote.data.highlight ?? latestNote.data.description}”
+            </p>
+          </div>
+
+          <span class="text-[0.85rem] font-semibold text-[var(--accent)]">
+            {strings.hero.readNote} <span aria-hidden="true" class="inline-block transition-transform duration-150 group-hover:translate-x-0.5">→</span>
+          </span>
+        </a>
+      ) : (
+        <div class="tile col-span-2 flex flex-col justify-between gap-4 @3xl:col-span-4" data-home-clock>
+          <p class="eyebrow">{strings.hero.clockLabel}</p>
+          <div class="flex flex-col items-start justify-between gap-1 @md:flex-row @md:items-end">
+            <span
+              data-clock-time
+              class="font-serif text-[clamp(2.3rem,5vw,3.4rem)] font-[350] leading-none tracking-[-0.03em] tabular-nums lining-nums"
+            >
+              --:--
+            </span>
+            <span class="eyebrow">UTC−5</span>
+          </div>
+        </div>
+      )
+    }
   </div>
 </section>
 
 <script>
-  const clock = document.querySelector<HTMLElement>("[data-bogota-clock]");
+  // Hora de Bogotá y, si el bloque trae `data-status`, una frase según la hora
+  // ("seguramente programando"). Sin JS queda "--:--" y "UTC−5".
+  const block = document.querySelector<HTMLElement>("[data-home-clock]");
+  const time = block?.querySelector<HTMLElement>("[data-clock-time]");
+  const status = block?.querySelector<HTMLElement>("[data-clock-status]");
+  const schedule: { until: number; text: string }[] = JSON.parse(block?.dataset.status ?? "[]");
 
-  if (clock) {
+  if (time) {
     const format = new Intl.DateTimeFormat("es-CO", {
       hour: "2-digit",
       minute: "2-digit",
-      hour12: false,
+      hourCycle: "h23",
       timeZone: "America/Bogota",
     });
 
     const tick = () => {
-      clock.textContent = format.format(new Date());
+      const parts = format.formatToParts(new Date());
+      const hour = Number(parts.find((part) => part.type === "hour")?.value);
+      const minute = parts.find((part) => part.type === "minute")?.value;
+
+      time.textContent = `${String(hour).padStart(2, "0")}:${minute}`;
+
+      const current = schedule.find((slot) => hour < slot.until);
+      if (status && current) status.textContent = current.text;
     };
 
     tick();

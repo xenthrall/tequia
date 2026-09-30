@@ -26,6 +26,8 @@ const notas = defineCollection({
     title: z.string(),
     // Resumen de 1-2 frases: se usa en el listado, en buscadores y al compartir.
     description: z.string().max(220),
+    // Frase de la nota que se cita en el bloque de la home. Si falta, se usa `description`.
+    highlight: z.string().max(200).optional(),
     date: z.coerce.date(),
     updated: z.coerce.date().optional(),
     tags: z.array(z.string()).default([]),
