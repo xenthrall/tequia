@@ -1,4 +1,4 @@
-import { whatsappUrl, githubUrl, instagramUrl, websiteUrl } from "./chatbot-links";
+import { whatsappUrl, githubUrl, linkedinUrl, instagramUrl, websiteUrl } from "./chatbot-links";
 import type { ChatbotData } from "./chatbot-data";
 
 const contactLinks = whatsappUrl ? [{ label: "Message on WhatsApp", url: whatsappUrl }] : [];
@@ -108,6 +108,12 @@ export const chatbotData: ChatbotData = {
       keywords: ["github", "repository", "repositories", "code"],
       response: "You can find his projects on GitHub.",
       links: githubUrl ? [{ label: "View GitHub", url: githubUrl }] : [],
+    },
+    {
+      id: "linkedin",
+      keywords: ["linkedin", "linked in", "professional profile"],
+      response: "You can check his professional profile on LinkedIn.",
+      links: linkedinUrl ? [{ label: "View LinkedIn", url: linkedinUrl }] : [],
     },
     {
       id: "instagram",

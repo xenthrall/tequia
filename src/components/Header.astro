@@ -1,25 +1,31 @@
 ---
 import { uiIcons } from "../icons/ui";
 import { getStrings } from "../i18n/strings";
-import { localizedPath, type Locale } from "../i18n/config";
+import { localizedPath, type Locale, type LocalePaths } from "../i18n/config";
+import { notesIndexPath } from "../lib/notes";
 import LanguageSwitcher from "./LanguageSwitcher.astro";
 
 interface Props {
   locale: Locale;
+  localePaths?: LocalePaths;
 }
 
-const { locale } = Astro.props;
+const { locale, localePaths } = Astro.props;
 const strings = getStrings(locale);
 
 const homePath = localizedPath("/", locale);
 
-const navLinks = [
+const navLinks: { href: string; label: string; matchPrefix?: boolean }[] = [
   { href: localizedPath("/services/", locale), label: strings.header.nav.services },
   { href: localizedPath("/hire-me/", locale), label: strings.header.nav.hireMe },
+  // Notas marca "página actual" en cualquier subruta (nota, etiqueta, página N).
+  { href: notesIndexPath(locale), label: strings.header.nav.notes, matchPrefix: true },
 ];
 
 const currentPath = Astro.url.pathname.replace(/\/?$/, "/");
 const isHome = currentPath === homePath;
+const isCurrent = (link: { href: string; matchPrefix?: boolean }) =>
+  link.matchPrefix ? currentPath.startsWith(link.href) : currentPath === link.href;
 ---
 
 <header class="flex items-center justify-between gap-3 pb-[18px] pt-2">
@@ -33,7 +39,7 @@ const isHome = currentPath === homePath;
       !isHome && (
         <a
           href={homePath}
-          class="mr-1 inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] bg-[var(--card)] py-[7px] pl-2.5 pr-3.5 text-[0.86rem] font-medium text-[var(--text)] no-underline transition duration-150 hover:border-[var(--text)] [&_svg]:h-4 [&_svg]:w-4"
+          class="mr-1 hidden items-center gap-1.5 rounded-full border border-[var(--border)] bg-[var(--card)] py-[7px] pl-2.5 pr-3.5 text-[0.86rem] font-medium text-[var(--text)] no-underline transition duration-150 hover:border-[var(--text)] sm:inline-flex [&_svg]:h-4 [&_svg]:w-4"
         >
           <Fragment set:html={uiIcons.arrowLeft} />
           {strings.header.nav.home}
@@ -45,7 +51,7 @@ const isHome = currentPath === homePath;
       navLinks.map((link) => (
         <a
           href={link.href}
-          aria-current={currentPath === link.href ? "page" : undefined}
+          aria-current={isCurrent(link) ? "page" : undefined}
           class="hidden rounded-full px-3 py-[7px] text-[0.86rem] text-[var(--muted)] no-underline transition duration-150 hover:bg-[var(--card)] hover:text-[var(--text)] aria-[current=page]:text-[var(--text)] sm:block"
         >
           {link.label}
@@ -62,6 +68,30 @@ const isHome = currentPath === homePath;
       <Fragment set:html={uiIcons.theme} />
     </button>
 
-    <LanguageSwitcher locale={locale} />
+    <LanguageSwitcher locale={locale} localePaths={localePaths} />
+
+    <!-- En móvil los enlaces de arriba se ocultan: este menú los reemplaza. -->
+    <details class="relative sm:hidden" data-dropdown>
+      <summary
+        class="grid h-9 w-9 cursor-pointer list-none place-items-center rounded-full text-[var(--text)] transition duration-150 marker:content-none hover:bg-[var(--card)] [&::-webkit-details-marker]:hidden [&_svg]:h-[20px] [&_svg]:w-[20px]"
+        aria-label={strings.header.menu}
+      >
+        <Fragment set:html={uiIcons.menu} />
+      </summary>
+
+      <div class="absolute right-0 top-[calc(100%+8px)] z-10 min-w-[180px] overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--card)] py-1 shadow-[0_14px_40px_rgba(0,0,0,0.18)]">
+        {
+          [{ href: homePath, label: strings.header.nav.home }, ...navLinks].map((link) => (
+            <a
+              href={link.href}
+              aria-current={isCurrent(link) ? "page" : undefined}
+              class="block px-4 py-2.5 text-sm text-[var(--text)] no-underline transition duration-150 hover:bg-[var(--card-hover)] aria-[current=page]:bg-[var(--accent-soft)] aria-[current=page]:font-semibold aria-[current=page]:text-[var(--accent)]"
+            >
+              {link.label}
+            </a>
+          ))
+        }
+      </div>
+    </details>
   </nav>
 </header>

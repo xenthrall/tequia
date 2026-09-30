@@ -98,7 +98,7 @@ El resto de la home se simplifica: menos "linktree personal" (Instagram puede ba
 - [x] `/services` con paquetes, proceso de trabajo y CTA de contacto orientado a negocio.
 - [x] SEO básico: canonical + `hreflang` (incluye `x-default`) por página, OG/Twitter cards, JSON-LD `Person`, sitemap con anotaciones de idioma (`@astrojs/sitemap`), `robots.txt`.
 - [x] Chatbot traducido (intents, quick replies y copy de la UI) y activo en ambos idiomas.
-- [ ] LinkedIn en los enlaces sociales — **pendiente**, sigue bloqueado por la sección 12 (no se fabricó una URL).
+- [x] LinkedIn (`linkedin.com/in/xenthrall`) en los enlaces sociales de la home, junto al botón de CV en `/hire-me` y como intent del chatbot (2026-09-30).
 - [ ] CV en PDF real — cada idioma ya apunta a su propio archivo (`/cv/jhon-tequia-en.pdf` y `/cv/jhon-tequia-es.pdf`, ver `src/data/hire-me.en.ts`/`hire-me.es.ts`), pero los archivos aún no existen en `public/cv/`; hoy el botón de descarga da 404 hasta que Jhon coloque ahí los dos PDF.
 
 **Fase 2 — Contenido y prueba de valor.**
@@ -110,7 +110,7 @@ El resto de la home se simplifica: menos "linktree personal" (Instagram puede ba
 **Fase 3 — Medición y crecimiento.**
 - Analítica ligera (ej. Plausible/Umami, respetuosa de privacidad) segmentada por página/CTA.
 - Formularios diferenciados por audiencia con campos relevantes (tipo de proyecto/presupuesto vs. tipo de rol/disponibilidad).
-- Contenido adicional (casos de estudio extendidos, blog) para SEO de largo plazo si hay tiempo/interés.
+- Contenido adicional (casos de estudio extendidos) para SEO de largo plazo si hay tiempo/interés. El espacio de escritura ya existe: ver §13 (Notas).
 - Versión en inglés de `/hire-me` (confirmado para esta fase, no antes, aunque el objetivo remoto internacional ya existe hoy).
 
 ## 8. Métricas de éxito
@@ -126,7 +126,7 @@ El resto de la home se simplifica: menos "linktree personal" (Instagram puede ba
 - **Disponibilidad:** ambos — abierto a full-time y a freelance por proyecto, sin preferencia marcada. `/hire-me` y la sección de servicios deben coexistir sin que una reste peso a la otra.
 - **Modalidad y ubicación:** actualmente en Bogotá, abierto a híbrido/presencial local con posibilidad de reubicación, y también a remoto internacional. `/hire-me` debe mostrar esto explícitamente (ubicación actual + apertura a reubicación + remoto) para no filtrar oportunidades por defecto.
 - **CV:** ya existe un CV en PDF actualizado — se enlaza/descarga directo desde `/hire-me` (falta que Jhon lo entregue como archivo para incluirlo en `public/`).
-- **LinkedIn:** no confirmado como activo — pendiente crear/activar el perfil y enlazarlo junto al CV en `/hire-me` y en `social-links.ts`.
+- **LinkedIn:** activo (`https://www.linkedin.com/in/xenthrall/`, confirmado 2026-09-30) — enlazado junto al CV en `/hire-me` y en `social-links.ts`.
 - **Precios en servicios B2B:** solo "cotización a medida", sin cifras públicas. El CTA de servicios debe llevar a conversación (formulario/WhatsApp), no a una tabla de precios.
 - **Testimonios:** no hay ninguno todavía. La sección de prueba social queda fuera de la Fase 1/2 y se agrega más adelante cuando existan (Operación Sistémica S.A.S. o algún cliente freelance son las fuentes más probables).
 - ~~**Versión en inglés de `/hire-me`:** no es prioridad de Fase 1...~~ **Superado (2026-09-18):** se decidió construir el sitio completo como bilingüe (`/en/`, `/es/`) desde la Fase 1, no solo `/hire-me`. Ver sección 11.
@@ -161,5 +161,17 @@ El resto de la home se simplifica: menos "linktree personal" (Instagram puede ba
 ## 12. Decisiones aún pendientes
 
 - Entregar el archivo del CV en PDF para incluirlo en el sitio (posiblemente en dos idiomas si aplica).
-- Crear/activar y compartir el enlace de LinkedIn.
 - Confirmar si el enfoque "linktree" (Instagram, etc.) se conserva tal cual o se relega a footer para no restar seriedad profesional frente a ambas audiencias.
+
+## 13. Notas (espacio personal de escritura)
+
+**Decisión (2026-09-30):** en vez de un blog de marketing, el sitio tiene una sección de **Notas**: ideas, aprendizajes y pensamientos que Jhon siente que vale la pena compartir, para público general.
+
+- **Sin calendario.** Se escribe cuando algo lo amerita. Por eso se llama "Notas" y no "Blog" (no promete frecuencia).
+- **Última nota en la home, sin fecha (2026-09-30).** El bloque que antes era solo el reloj de Bogotá ahora combina la hora, una frase según la hora ("seguramente programando", editable en `src/i18n/strings.ts` → `hero.status`) y la nota más reciente con una cita (`highlight`). La fecha no se muestra a propósito, para no delatar el tiempo entre notas. Sin notas publicadas, vuelve a ser solo el reloj.
+- **Fuera del embudo de conversión.** Se enlaza desde el `Header`, no desde `AudienceSplit`: humaniza el sitio sin restar foco a `/services` ni a `/hire-me`.
+- **Español primero, inglés por IA.** Jhon escribe en español; la versión en inglés se genera con el comando `/traducir-nota` (`.claude/skills/traducir-nota/`) y se revisa antes de publicar. Una nota sin traducción existe solo en `/es/notas/`. Las traducciones se marcan como tales ("Translated from Spanish").
+- **Rutas:** `/es/notas/` y `/en/notes/` (slug propio por idioma), con páginas por tema, paginación y RSS por idioma. SEO: canonical, hreflang solo entre versiones reales, `og:type=article` y JSON-LD `BlogPosting`.
+- **Escala:** pensado para cientos de notas: subcarpetas por año en el repo, paginación de 20, temas con conteo, borradores (`draft`), y validación en build de las referencias de traducción.
+
+Guía práctica de escritura y publicación: `docs/notas.md`.

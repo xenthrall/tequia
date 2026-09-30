@@ -1,0 +1,13 @@
+---
+import NoteView from "../../../components/notes/NoteView.astro";
+import { getNotes, noteSlug, type Note } from "../../../lib/notes";
+
+export async function getStaticPaths() {
+  const notes = await getNotes("es");
+  return notes.map((note) => ({ params: { slug: noteSlug(note) }, props: { note } }));
+}
+
+const { note } = Astro.props as { note: Note };
+---
+
+<NoteView note={note} />

@@ -14,5 +14,6 @@ function findUrl<T extends { url: string }>(list: T[], predicate: (item: T) => b
 // links.ts no están localizados (son marcas/URLs, no copy).
 export const whatsappUrl = findUrl(socialLinks, (item) => item.name === "WhatsApp");
 export const githubUrl = findUrl(socialLinks, (item) => item.name === "GitHub");
+export const linkedinUrl = findUrl(socialLinks, (item) => item.name === "LinkedIn");
 export const instagramUrl = findUrl(socialLinks, (item) => item.name === "Instagram");
 export const websiteUrl = findUrl(links, (item) => item.title === "tequia.dev");

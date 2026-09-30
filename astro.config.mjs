@@ -22,6 +22,15 @@ export default defineConfig({
     },
   },
 
+  markdown: {
+    // Tema doble para los bloques de código de las notas: el color se elige
+    // por CSS según `.light-mode` (ver final de src/styles/global.css).
+    shikiConfig: {
+      themes: { light: "github-light", dark: "github-dark" },
+      defaultColor: false,
+    },
+  },
+
   integrations: [
     sitemap({
       // "/" es solo el stub de detección de idioma (canonical → /en/), no

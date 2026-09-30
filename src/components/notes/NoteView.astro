@@ -1,0 +1,42 @@
+---
+// Página completa de una nota, con metadatos de artículo y JSON-LD BlogPosting.
+import PageShell from "../../layouts/PageShell.astro";
+import NoteArticle from "./NoteArticle.astro";
+import { getProfile } from "../../data/profile";
+import { siteUrl } from "../../i18n/config";
+import { getTranslations, noteLocale, notePath, notePaths, type Note } from "../../lib/notes";
+
+interface Props {
+  note: Note;
+}
+
+const { note } = Astro.props;
+const locale = noteLocale(note);
+const profile = getProfile(locale);
+const translations = await getTranslations(note);
+const { title, description, date, updated, tags } = note.data;
+
+const blogPosting = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: title,
+  description,
+  inLanguage: locale,
+  datePublished: date.toISOString(),
+  dateModified: (updated ?? date).toISOString(),
+  keywords: tags,
+  url: `${siteUrl}${notePath(note)}`,
+  author: { "@type": "Person", name: profile.name, url: siteUrl },
+};
+---
+
+<PageShell
+  locale={locale}
+  title={`${title} — ${profile.name}`}
+  description={description}
+  localePaths={await notePaths(note)}
+  article={{ publishedTime: date, modifiedTime: updated, tags }}
+  jsonLd={[blogPosting]}
+>
+  <NoteArticle note={note} translations={translations} />
+</PageShell>

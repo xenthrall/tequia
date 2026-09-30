@@ -1,0 +1,130 @@
+---
+// Listado de notas: índice (con paginación) y páginas de etiqueta. Las notas
+// de la página se agrupan por año y el panel lateral muestra los temas.
+import SectionHeading from "../SectionHeading.astro";
+import { getStrings } from "../../i18n/strings";
+import type { Locale } from "../../i18n/config";
+import {
+  formatNoteDate,
+  groupByYear,
+  notePath,
+  notesIndexPath,
+  notesRssPath,
+  readingMinutes,
+  tagPath,
+  type NotesPage,
+  type TagSummary,
+} from "../../lib/notes";
+
+interface Props {
+  locale: Locale;
+  heading: { lead: string; emphasis?: string };
+  // Total de notas del listado completo (no solo de esta página).
+  total: number;
+  pagination: NotesPage;
+  tags: TagSummary[];
+  activeTag?: string;
+}
+
+const { locale, heading, total, pagination, tags, activeTag } = Astro.props;
+const strings = getStrings(locale);
+const { notes, page, totalPages } = pagination;
+const years = groupByYear(notes);
+---
+
+<section class="@container" aria-labelledby="notes-heading">
+  <SectionHeading id="notes-heading" lead={heading.lead} emphasis={heading.emphasis} meta={strings.notes.count(total)} />
+
+  <div class="grid grid-cols-1 gap-3 @3xl:grid-cols-12">
+    <div class="tile flex flex-col gap-7 @3xl:col-span-8">
+      {notes.length === 0 && <p class="text-[0.95rem] text-[var(--muted)]">{strings.notes.empty}</p>}
+
+      {
+        years.map(({ year, notes: yearNotes }) => (
+          <div class="flex flex-col">
+            <h2 class="eyebrow m-0 pb-2">{year}</h2>
+            <ol class="m-0 flex list-none flex-col p-0">
+              {yearNotes.map((note) => (
+                <li class="border-t border-[var(--border)]">
+                  <a href={notePath(note)} class="group flex flex-col gap-1.5 py-4 text-[var(--text)] no-underline">
+                    <span class="flex flex-wrap items-center gap-x-3 gap-y-1">
+                      <time class="eyebrow" datetime={note.data.date.toISOString()}>
+                        {formatNoteDate(note.data.date, locale)}
+                      </time>
+                      <span class="eyebrow text-[var(--soft)]">
+                        {readingMinutes(note)} {strings.notes.minRead}
+                      </span>
+                      {note.data.draft && <span class="badge">{strings.notes.draft}</span>}
+                    </span>
+                    <span class="font-serif text-[1.45rem] font-[380] leading-[1.15] tracking-[-0.02em] transition-colors duration-150 group-hover:text-[var(--accent)]">
+                      {note.data.title}
+                    </span>
+                    <span class="max-w-[62ch] text-[0.92rem] leading-relaxed text-[var(--muted)]">{note.data.description}</span>
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </div>
+        ))
+      }
+
+      {
+        totalPages > 1 && (
+          <nav class="flex items-center justify-between gap-3 border-t border-[var(--border)] pt-4" aria-label={strings.notes.pageOf(page, totalPages)}>
+            {page > 1 ? (
+              <a href={notesIndexPath(locale, page - 1)} class="pill-link" rel="prev">
+                <span aria-hidden="true">←</span> {strings.notes.newer}
+              </a>
+            ) : (
+              <span />
+            )}
+            <span class="eyebrow">{strings.notes.pageOf(page, totalPages)}</span>
+            {page < totalPages ? (
+              <a href={notesIndexPath(locale, page + 1)} class="pill-link" rel="next">
+                {strings.notes.older} <span aria-hidden="true">→</span>
+              </a>
+            ) : (
+              <span />
+            )}
+          </nav>
+        )
+      }
+    </div>
+
+    <aside class="tile flex flex-col gap-5 self-start @3xl:col-span-4">
+      <p class="text-[0.92rem] leading-relaxed text-[var(--muted)]">{strings.notes.intro}</p>
+
+      {
+        tags.length > 0 && (
+          <div class="flex flex-col gap-2.5">
+            <h2 class="eyebrow m-0">{strings.notes.topics}</h2>
+            <ul class="m-0 flex list-none flex-wrap gap-1.5 p-0">
+              {activeTag && (
+                <li>
+                  <a href={notesIndexPath(locale)} class="tag no-underline hover:border-[var(--text)]">
+                    {strings.notes.allNotes}
+                  </a>
+                </li>
+              )}
+              {tags.map((tag) => (
+                <li>
+                  <a
+                    href={tagPath(locale, tag.name)}
+                    aria-current={tag.slug === activeTag ? "page" : undefined}
+                    class="tag no-underline hover:border-[var(--text)] aria-[current=page]:border-[var(--accent)] aria-[current=page]:text-[var(--accent)]"
+                  >
+                    {tag.name} <span class="text-[var(--soft)]">{tag.count}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
+
+      <a href={notesRssPath(locale)} class="pill-link w-fit">
+        {strings.notes.rss} <span aria-hidden="true">↗</span>
+      </a>
+    </aside>
+  </div>
+</section>

@@ -1,16 +1,17 @@
 ---
-import { locales, localizedPath, type Locale } from "../i18n/config";
+import { locales, localizedPath, type Locale, type LocalePaths } from "../i18n/config";
 import { getStrings } from "../i18n/strings";
 
 interface Props {
   locale: Locale;
+  localePaths?: LocalePaths;
 }
 
-const { locale } = Astro.props;
+const { locale, localePaths } = Astro.props;
 const strings = getStrings(locale);
 ---
 
-<details class="relative">
+<details class="relative" data-dropdown>
   <summary
     class="cursor-pointer list-none rounded-full border border-[var(--border)] px-3 py-[7px] font-mono text-[0.72rem] font-medium uppercase leading-[1.4] text-[var(--text)] transition duration-150 marker:content-none hover:border-[var(--text)] [&::-webkit-details-marker]:hidden"
     aria-label={strings.header.languageSwitcher}
@@ -21,7 +22,7 @@ const strings = getStrings(locale);
   <div class="absolute right-0 top-[calc(100%+8px)] z-10 min-w-[140px] overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--card)] shadow-[0_14px_40px_rgba(0,0,0,0.18)]">
     {
       locales.map((l) => {
-        const href = localizedPath(Astro.url.pathname, l.code);
+        const href = localePaths?.[l.code].path ?? localizedPath(Astro.url.pathname, l.code);
         return (
           <a
             href={href}

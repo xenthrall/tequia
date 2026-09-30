@@ -44,3 +44,17 @@ export function alternateLinks(pathname: string): { locale: Locale; href: string
     href: `${siteUrl}${localizedPath(pathname, code)}`,
   }));
 }
+
+// Segmentos de URL de la sección de notas en cada idioma (/es/notas/,
+// /en/notes/). Ver docs/notas.md.
+export const notesRoutes: Record<Locale, { base: string; page: string; tags: string }> = {
+  en: { base: "notes", page: "page", tags: "tags" },
+  es: { base: "notas", page: "pagina", tags: "etiquetas" },
+};
+
+// Ruta equivalente de la página actual en cada idioma, para páginas cuya URL
+// no se traduce solo cambiando el prefijo (p.ej. una nota con slug propio en
+// cada idioma). `translated: false` significa que no existe una versión real
+// en ese idioma: el selector de idioma lleva a `path` (un índice) pero no se
+// declara como hreflang.
+export type LocalePaths = Record<Locale, { path: string; translated: boolean }>;

@@ -1,5 +1,7 @@
 ---
 import { getProfile } from "../data/profile";
+import { getStrings } from "../i18n/strings";
+import { notesIndexPath } from "../lib/notes";
 import type { Locale } from "../i18n/config";
 
 interface Props {
@@ -8,10 +10,15 @@ interface Props {
 
 const { locale } = Astro.props;
 const profile = getProfile(locale);
+const strings = getStrings(locale);
 const year = new Date().getFullYear();
 ---
 
 <footer class="flex flex-wrap justify-between gap-2 px-1 pb-[76px] pt-[18px] sm:pb-2">
   <span class="eyebrow">© {year} {profile.name}</span>
-  <span class="eyebrow">tequia.dev</span>
+  <span class="flex gap-4">
+    <!-- En móvil el Header oculta la navegación: este es el acceso a Notas. -->
+    <a href={notesIndexPath(locale)} class="eyebrow no-underline transition-colors hover:text-[var(--text)]">{strings.header.nav.notes}</a>
+    <span class="eyebrow">tequia.dev</span>
+  </span>
 </footer>
