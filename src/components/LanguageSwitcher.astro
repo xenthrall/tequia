@@ -1,12 +1,13 @@
 ---
-import { locales, localizedPath, type Locale } from "../i18n/config";
+import { locales, localizedPath, type Locale, type LocalePaths } from "../i18n/config";
 import { getStrings } from "../i18n/strings";
 
 interface Props {
   locale: Locale;
+  localePaths?: LocalePaths;
 }
 
-const { locale } = Astro.props;
+const { locale, localePaths } = Astro.props;
 const strings = getStrings(locale);
 ---
 
@@ -21,7 +22,7 @@ const strings = getStrings(locale);
   <div class="absolute right-0 top-[calc(100%+8px)] z-10 min-w-[140px] overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--card)] shadow-[0_14px_40px_rgba(0,0,0,0.18)]">
     {
       locales.map((l) => {
-        const href = localizedPath(Astro.url.pathname, l.code);
+        const href = localePaths?.[l.code].path ?? localizedPath(Astro.url.pathname, l.code);
         return (
           <a
             href={href}

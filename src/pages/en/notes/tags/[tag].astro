@@ -1,0 +1,11 @@
+---
+import NotesTagView from "../../../../components/notes/NotesTagView.astro";
+import { getNotes, summarizeTags } from "../../../../lib/notes";
+
+export async function getStaticPaths() {
+  const notes = await getNotes("en");
+  return summarizeTags(notes).map(({ slug }) => ({ params: { tag: slug } }));
+}
+---
+
+<NotesTagView locale="en" tag={Astro.params.tag} />

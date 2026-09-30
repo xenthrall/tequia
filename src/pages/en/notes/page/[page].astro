@@ -1,0 +1,11 @@
+---
+import NotesIndexView from "../../../../components/notes/NotesIndexView.astro";
+import { extraPageNumbers, getNotes } from "../../../../lib/notes";
+
+export async function getStaticPaths() {
+  const notes = await getNotes("en");
+  return extraPageNumbers(notes).map((page) => ({ params: { page: String(page) } }));
+}
+---
+
+<NotesIndexView locale="en" page={Number(Astro.params.page)} />

@@ -110,7 +110,7 @@ El resto de la home se simplifica: menos "linktree personal" (Instagram puede ba
 **Fase 3 — Medición y crecimiento.**
 - Analítica ligera (ej. Plausible/Umami, respetuosa de privacidad) segmentada por página/CTA.
 - Formularios diferenciados por audiencia con campos relevantes (tipo de proyecto/presupuesto vs. tipo de rol/disponibilidad).
-- Contenido adicional (casos de estudio extendidos, blog) para SEO de largo plazo si hay tiempo/interés.
+- Contenido adicional (casos de estudio extendidos) para SEO de largo plazo si hay tiempo/interés. El espacio de escritura ya existe: ver §13 (Notas).
 - Versión en inglés de `/hire-me` (confirmado para esta fase, no antes, aunque el objetivo remoto internacional ya existe hoy).
 
 ## 8. Métricas de éxito
@@ -162,3 +162,15 @@ El resto de la home se simplifica: menos "linktree personal" (Instagram puede ba
 
 - Entregar el archivo del CV en PDF para incluirlo en el sitio (posiblemente en dos idiomas si aplica).
 - Confirmar si el enfoque "linktree" (Instagram, etc.) se conserva tal cual o se relega a footer para no restar seriedad profesional frente a ambas audiencias.
+
+## 13. Notas (espacio personal de escritura)
+
+**Decisión (2026-09-30):** en vez de un blog de marketing, el sitio tiene una sección de **Notas**: ideas, aprendizajes y pensamientos que Jhon siente que vale la pena compartir, para público general.
+
+- **Sin calendario.** Se escribe cuando algo lo amerita. Por eso se llama "Notas" y no "Blog" (no promete frecuencia) y la home no muestra "última publicación" (no delata tiempo sin escribir).
+- **Fuera del embudo de conversión.** Se enlaza desde el `Header`, no desde `AudienceSplit`: humaniza el sitio sin restar foco a `/services` ni a `/hire-me`.
+- **Español primero, inglés por IA.** Jhon escribe en español; la versión en inglés se genera con el comando `/traducir-nota` (`.claude/skills/traducir-nota/`) y se revisa antes de publicar. Una nota sin traducción existe solo en `/es/notas/`. Las traducciones se marcan como tales ("Translated from Spanish").
+- **Rutas:** `/es/notas/` y `/en/notes/` (slug propio por idioma), con páginas por tema, paginación y RSS por idioma. SEO: canonical, hreflang solo entre versiones reales, `og:type=article` y JSON-LD `BlogPosting`.
+- **Escala:** pensado para cientos de notas: subcarpetas por año en el repo, paginación de 20, temas con conteo, borradores (`draft`), y validación en build de las referencias de traducción.
+
+Guía práctica de escritura y publicación: `docs/notas.md`.

@@ -1,0 +1,91 @@
+---
+// Página de una nota: cabecera (fecha, lectura, temas), cuerpo en Markdown
+// con estilos `.note-prose` y pie con enlaces a otras versiones de idioma.
+import { render } from "astro:content";
+import { getStrings } from "../../i18n/strings";
+import { uiIcons } from "../../icons/ui";
+import {
+  formatNoteDate,
+  noteLocale,
+  notePath,
+  notesIndexPath,
+  readingMinutes,
+  tagPath,
+  type Note,
+} from "../../lib/notes";
+
+interface Props {
+  note: Note;
+  translations: Note[];
+}
+
+const { note, translations } = Astro.props;
+const locale = noteLocale(note);
+const strings = getStrings(locale);
+const { Content } = await render(note);
+
+const original = note.data.translationOf ? translations.find((other) => other.id === note.data.translationOf) : undefined;
+const languageName = (other: Note) => strings.notes.languageNames[noteLocale(other)];
+---
+
+<article class="@container">
+  <div class="mx-auto flex max-w-[760px] flex-col gap-3">
+    <header class="tile flex flex-col gap-4">
+      <a
+        href={notesIndexPath(locale)}
+        class="eyebrow inline-flex w-fit items-center gap-1.5 no-underline transition-colors hover:text-[var(--text)] [&_svg]:h-3.5 [&_svg]:w-3.5"
+      >
+        <Fragment set:html={uiIcons.arrowLeft} />
+        {strings.notes.backToNotes}
+      </a>
+
+      <h1 class="display m-0 text-[clamp(2rem,5vw,3.2rem)] leading-[1.04] text-[var(--text)]">{note.data.title}</h1>
+
+      <p class="max-w-[60ch] text-[1.02rem] leading-relaxed text-[var(--muted)]">{note.data.description}</p>
+
+      <div class="flex flex-wrap items-center gap-x-3 gap-y-2">
+        <time class="eyebrow" datetime={note.data.date.toISOString()}>{formatNoteDate(note.data.date, locale)}</time>
+        <span class="eyebrow text-[var(--soft)]">{readingMinutes(note)} {strings.notes.minRead}</span>
+        {note.data.draft && <span class="badge">{strings.notes.draft}</span>}
+      </div>
+
+      {
+        note.data.tags.length > 0 && (
+          <ul class="m-0 flex list-none flex-wrap gap-1.5 p-0">
+            {note.data.tags.map((tag) => (
+              <li>
+                <a href={tagPath(locale, tag)} class="tag no-underline hover:border-[var(--text)]">
+                  {tag}
+                </a>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </header>
+
+    <div class="tile note-prose">
+      <Content />
+    </div>
+
+    {
+      (original || translations.length > 0) && (
+        <footer class="tile flex flex-wrap items-center justify-between gap-3 py-4">
+          {original ? (
+            <p class="text-[0.86rem] text-[var(--muted)]">{strings.notes.translatedFrom(languageName(original))}</p>
+          ) : (
+            <span />
+          )}
+          <div class="flex flex-wrap gap-1.5">
+            {translations.map((other) => (
+              <a href={notePath(other)} lang={noteLocale(other)} hreflang={noteLocale(other)} class="pill-link [&_svg]:h-3.5 [&_svg]:w-3.5">
+                <Fragment set:html={uiIcons.language} />
+                {strings.notes.readIn(languageName(other))}
+              </a>
+            ))}
+          </div>
+        </footer>
+      )
+    }
+  </div>
+</article>

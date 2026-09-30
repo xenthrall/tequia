@@ -1,0 +1,39 @@
+---
+// Todas las notas de un idioma con una etiqueta dada (sin paginar: una
+// etiqueta agrupa muchas menos notas que el índice).
+import PageShell from "../../layouts/PageShell.astro";
+import NotesList from "./NotesList.astro";
+import { getProfile } from "../../data/profile";
+import { getStrings } from "../../i18n/strings";
+import type { Locale } from "../../i18n/config";
+import { getNotes, notesListPaths, notesWithTag, summarizeTags, tagPath } from "../../lib/notes";
+
+interface Props {
+  locale: Locale;
+  tag: string;
+}
+
+const { locale, tag } = Astro.props;
+const strings = getStrings(locale);
+const profile = getProfile(locale);
+const notes = await getNotes(locale);
+const tags = summarizeTags(notes);
+const current = tags.find((summary) => summary.slug === tag)!;
+const tagged = notesWithTag(notes, tag);
+---
+
+<PageShell
+  locale={locale}
+  title={`${strings.notes.taggedWith} ${current.name} — ${profile.name}`}
+  description={strings.notes.intro}
+  localePaths={notesListPaths(locale, tagPath(locale, current.name))}
+>
+  <NotesList
+    locale={locale}
+    heading={{ lead: strings.notes.taggedWith, emphasis: current.name }}
+    total={tagged.length}
+    pagination={{ notes: tagged, page: 1, totalPages: 1 }}
+    tags={tags}
+    activeTag={tag}
+  />
+</PageShell>

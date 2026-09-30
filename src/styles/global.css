@@ -292,3 +292,148 @@ a {
     animation-iteration-count: 1 !important;
   }
 }
+
+
+/* =========================================================
+   Cuerpo de una nota (Markdown renderizado). Sin plugin de
+   tipografía: solo lo que el Markdown de las notas produce.
+   ========================================================= */
+
+@layer components {
+  .note-prose {
+    font-size: 1.04rem;
+    line-height: 1.75;
+    color: var(--text);
+    overflow-wrap: break-word;
+  }
+
+  .note-prose > :first-child {
+    margin-top: 0;
+  }
+
+  .note-prose > :last-child {
+    margin-bottom: 0;
+  }
+
+  .note-prose :where(p, ul, ol, blockquote, pre, figure, table) {
+    margin: 0 0 1.25em;
+  }
+
+  .note-prose :where(h2, h3, h4) {
+    margin: 1.9em 0 0.6em;
+    font-family: var(--font-serif);
+    font-weight: 420;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  .note-prose h2 {
+    font-size: 1.65rem;
+  }
+
+  .note-prose h3 {
+    font-size: 1.3rem;
+  }
+
+  .note-prose h4 {
+    font-size: 1.08rem;
+  }
+
+  .note-prose a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+
+  .note-prose :where(ul, ol) {
+    padding-left: 1.3em;
+  }
+
+  .note-prose ul {
+    list-style: disc;
+  }
+
+  .note-prose ol {
+    list-style: decimal;
+  }
+
+  .note-prose li + li {
+    margin-top: 0.35em;
+  }
+
+  .note-prose li::marker {
+    color: var(--soft);
+  }
+
+  .note-prose strong {
+    font-weight: 600;
+  }
+
+  .note-prose blockquote {
+    border-left: 2px solid var(--accent);
+    padding-left: 1em;
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--muted);
+  }
+
+  .note-prose hr {
+    margin: 2.2em 0;
+    border: 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .note-prose img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 14px;
+  }
+
+  .note-prose :not(pre) > code {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--background);
+    padding: 0.1em 0.35em;
+    font-family: var(--font-mono);
+    font-size: 0.86em;
+  }
+
+  .note-prose pre {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1em 1.2em;
+    font-family: var(--font-mono);
+    font-size: 0.86rem;
+    line-height: 1.6;
+  }
+
+  .note-prose table {
+    display: block;
+    overflow-x: auto;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+  }
+
+  .note-prose :where(th, td) {
+    border-bottom: 1px solid var(--border);
+    padding: 0.5em 0.8em;
+    text-align: left;
+  }
+}
+
+/* Resaltado de código de Shiki con tema doble (ver markdown.shikiConfig en
+   astro.config.mjs): oscuro por defecto, claro con `.light-mode`. */
+.astro-code,
+.astro-code span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--shiki-dark-bg) !important;
+}
+
+.light-mode .astro-code,
+.light-mode .astro-code span {
+  color: var(--shiki-light) !important;
+  background-color: var(--shiki-light-bg) !important;
+}

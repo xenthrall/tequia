@@ -5,7 +5,7 @@ export interface UiStrings {
     themeToggle: string;
     languageSwitcher: string;
     backToHome: string;
-    nav: { home: string; services: string; hireMe: string };
+    nav: { home: string; services: string; hireMe: string; notes: string };
   };
   hero: {
     clockLabel: string;
@@ -70,6 +70,27 @@ export interface UiStrings {
     packagesHeading: string;
     processHeading: string;
   };
+  notes: {
+    title: string;
+    heading: { lead: string; emphasis: string };
+    intro: string;
+    count: (n: number) => string;
+    minRead: string;
+    topics: string;
+    allNotes: string;
+    taggedWith: string;
+    empty: string;
+    draft: string;
+    newer: string;
+    older: string;
+    pageOf: (page: number, total: number) => string;
+    rss: string;
+    backToNotes: string;
+    // Nombre de cada idioma dentro de este idioma ("Spanish" / "español").
+    languageNames: Record<Locale, string>;
+    readIn: (language: string) => string;
+    translatedFrom: (language: string) => string;
+  };
 }
 
 const en: UiStrings = {
@@ -77,7 +98,7 @@ const en: UiStrings = {
     themeToggle: "Toggle appearance",
     languageSwitcher: "Change language",
     backToHome: "Back to home",
-    nav: { home: "Home", services: "Services", hireMe: "Hire me" },
+    nav: { home: "Home", services: "Services", hireMe: "Hire me", notes: "Notes" },
   },
   hero: {
     clockLabel: "Local time · Bogotá",
@@ -151,6 +172,26 @@ const en: UiStrings = {
     packagesHeading: "How I can help",
     processHeading: "How we'd work together",
   },
+  notes: {
+    title: "Notes",
+    heading: { lead: "Loose", emphasis: "notes" },
+    intro: "Ideas, lessons and thoughts I find worth sharing. No schedule: I write when something deserves it.",
+    count: (n) => `${n} ${n === 1 ? "note" : "notes"}`,
+    minRead: "min read",
+    topics: "Topics",
+    allNotes: "All notes",
+    taggedWith: "Notes on",
+    empty: "No notes published yet.",
+    draft: "Draft",
+    newer: "Newer",
+    older: "Older",
+    pageOf: (page, total) => `Page ${page} of ${total}`,
+    rss: "RSS",
+    backToNotes: "All notes",
+    languageNames: { en: "English", es: "Spanish" },
+    readIn: (language) => `Read in ${language}`,
+    translatedFrom: (language) => `Translated from ${language}.`,
+  },
 };
 
 const es: UiStrings = {
@@ -158,7 +199,7 @@ const es: UiStrings = {
     themeToggle: "Cambiar apariencia",
     languageSwitcher: "Cambiar idioma",
     backToHome: "Volver al inicio",
-    nav: { home: "Inicio", services: "Servicios", hireMe: "Contratar" },
+    nav: { home: "Inicio", services: "Servicios", hireMe: "Contratar", notes: "Notas" },
   },
   hero: {
     clockLabel: "Hora local · Bogotá",
@@ -231,6 +272,26 @@ const es: UiStrings = {
   services: {
     packagesHeading: "Cómo puedo ayudarte",
     processHeading: "Cómo trabajaríamos juntos",
+  },
+  notes: {
+    title: "Notas",
+    heading: { lead: "Notas", emphasis: "sueltas" },
+    intro: "Ideas, aprendizajes y pensamientos que siento que vale la pena compartir. Sin calendario: escribo cuando algo lo amerita.",
+    count: (n) => `${n} ${n === 1 ? "nota" : "notas"}`,
+    minRead: "min de lectura",
+    topics: "Temas",
+    allNotes: "Todas las notas",
+    taggedWith: "Notas sobre",
+    empty: "Todavía no hay notas publicadas.",
+    draft: "Borrador",
+    newer: "Más recientes",
+    older: "Anteriores",
+    pageOf: (page, total) => `Página ${page} de ${total}`,
+    rss: "RSS",
+    backToNotes: "Todas las notas",
+    languageNames: { en: "inglés", es: "español" },
+    readIn: (language) => `Leer en ${language}`,
+    translatedFrom: (language) => `Traducida del ${language}.`,
   },
 };
 

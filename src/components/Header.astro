@@ -1,14 +1,16 @@
 ---
 import { uiIcons } from "../icons/ui";
 import { getStrings } from "../i18n/strings";
-import { localizedPath, type Locale } from "../i18n/config";
+import { localizedPath, type Locale, type LocalePaths } from "../i18n/config";
+import { notesIndexPath } from "../lib/notes";
 import LanguageSwitcher from "./LanguageSwitcher.astro";
 
 interface Props {
   locale: Locale;
+  localePaths?: LocalePaths;
 }
 
-const { locale } = Astro.props;
+const { locale, localePaths } = Astro.props;
 const strings = getStrings(locale);
 
 const homePath = localizedPath("/", locale);
@@ -16,6 +18,8 @@ const homePath = localizedPath("/", locale);
 const navLinks = [
   { href: localizedPath("/services/", locale), label: strings.header.nav.services },
   { href: localizedPath("/hire-me/", locale), label: strings.header.nav.hireMe },
+  // Notas marca "página actual" en cualquier subruta (nota, etiqueta, página N).
+  { href: notesIndexPath(locale), label: strings.header.nav.notes, matchPrefix: true },
 ];
 
 const currentPath = Astro.url.pathname.replace(/\/?$/, "/");
@@ -45,7 +49,7 @@ const isHome = currentPath === homePath;
       navLinks.map((link) => (
         <a
           href={link.href}
-          aria-current={currentPath === link.href ? "page" : undefined}
+          aria-current={(link.matchPrefix ? currentPath.startsWith(link.href) : currentPath === link.href) ? "page" : undefined}
           class="hidden rounded-full px-3 py-[7px] text-[0.86rem] text-[var(--muted)] no-underline transition duration-150 hover:bg-[var(--card)] hover:text-[var(--text)] aria-[current=page]:text-[var(--text)] sm:block"
         >
           {link.label}
@@ -62,6 +66,6 @@ const isHome = currentPath === homePath;
       <Fragment set:html={uiIcons.theme} />
     </button>
 
-    <LanguageSwitcher locale={locale} />
+    <LanguageSwitcher locale={locale} localePaths={localePaths} />
   </nav>
 </header>

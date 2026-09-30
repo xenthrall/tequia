@@ -1,0 +1,40 @@
+---
+// Índice de notas de un idioma (página 1) y sus páginas siguientes.
+import PageShell from "../../layouts/PageShell.astro";
+import NotesList from "./NotesList.astro";
+import { getProfile } from "../../data/profile";
+import { getStrings } from "../../i18n/strings";
+import type { Locale } from "../../i18n/config";
+import { getNotes, notesIndexPath, notesListPaths, paginateNotes, summarizeTags } from "../../lib/notes";
+
+interface Props {
+  locale: Locale;
+  page: number;
+}
+
+const { locale, page } = Astro.props;
+const strings = getStrings(locale);
+const profile = getProfile(locale);
+const notes = await getNotes(locale);
+const pagination = paginateNotes(notes, page);
+
+const title =
+  page > 1
+    ? `${strings.notes.title} · ${strings.notes.pageOf(page, pagination.totalPages)} — ${profile.name}`
+    : `${strings.notes.title} — ${profile.name}`;
+---
+
+<PageShell
+  locale={locale}
+  title={title}
+  description={strings.notes.intro}
+  localePaths={notesListPaths(locale, notesIndexPath(locale, page))}
+>
+  <NotesList
+    locale={locale}
+    heading={strings.notes.heading}
+    total={notes.length}
+    pagination={pagination}
+    tags={summarizeTags(notes)}
+  />
+</PageShell>
