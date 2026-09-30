@@ -1,6 +1,7 @@
 ---
 import { getHireMe } from "../data/hire-me";
 import { getProfile } from "../data/profile";
+import { socialLinks } from "../data/social-links";
 import { getStrings } from "../i18n/strings";
 import { withBase } from "../lib/base-url";
 import SectionHeading from "./SectionHeading.astro";
@@ -16,6 +17,7 @@ const { locale } = Astro.props;
 const hireMe = getHireMe(locale);
 const profile = getProfile(locale);
 const strings = getStrings(locale);
+const linkedin = socialLinks.find((link) => link.name === "LinkedIn");
 ---
 
 <section class="@container">
@@ -31,13 +33,27 @@ const strings = getStrings(locale);
         {hireMe.availability.map((item) => <span class="badge">{item}</span>)}
       </div>
 
-      <a
-        href={withBase(hireMe.cvUrl)}
-        download
-        class="mt-2 inline-flex w-fit items-center gap-2 rounded-full bg-[var(--text)] px-5 py-3 text-sm font-semibold text-[var(--background)] no-underline transition hover:bg-[var(--accent)] hover:text-white"
-      >
-        {hireMe.cvLabel} <span aria-hidden="true">↓</span>
-      </a>
+      <div class="mt-2 flex flex-wrap gap-2">
+        <a
+          href={withBase(hireMe.cvUrl)}
+          download
+          class="inline-flex w-fit items-center gap-2 rounded-full bg-[var(--text)] px-5 py-3 text-sm font-semibold text-[var(--background)] no-underline transition hover:bg-[var(--accent)] hover:text-white"
+        >
+          {hireMe.cvLabel} <span aria-hidden="true">↓</span>
+        </a>
+        {
+          linkedin && (
+            <a
+              href={linkedin.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex w-fit items-center gap-2 rounded-full border border-[var(--border)] px-5 py-3 text-sm font-semibold text-[var(--text)] no-underline transition hover:border-[var(--text)]"
+            >
+              {linkedin.name} <span aria-hidden="true">↗</span>
+            </a>
+          )
+        }
+      </div>
     </div>
 
     <figure class="tile relative m-0 hidden min-h-[240px] overflow-hidden p-0 @2xl:block">
