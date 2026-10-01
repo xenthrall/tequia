@@ -99,12 +99,12 @@ El resto de la home se simplifica: menos "linktree personal" (Instagram puede ba
 - [x] SEO básico: canonical + `hreflang` (incluye `x-default`) por página, OG/Twitter cards, JSON-LD `Person`, sitemap con anotaciones de idioma (`@astrojs/sitemap`), `robots.txt`.
 - [x] Chatbot traducido (intents, quick replies y copy de la UI) y activo en ambos idiomas.
 - [x] LinkedIn (`linkedin.com/in/xenthrall`) en los enlaces sociales de la home, junto al botón de CV en `/hire-me` y como intent del chatbot (2026-09-30).
-- [ ] CV en PDF real — cada idioma ya apunta a su propio archivo (`/cv/jhon-tequia-en.pdf` y `/cv/jhon-tequia-es.pdf`, ver `src/data/hire-me.en.ts`/`hire-me.es.ts`), pero los archivos aún no existen en `public/cv/`; hoy el botón de descarga da 404 hasta que Jhon coloque ahí los dos PDF.
+- [x] CV en PDF real en ambos idiomas: `public/cv/jhon-tequia-es.pdf` y `public/cv/jhon-tequia-en.pdf`, descargables desde `/es/hire-me/` y `/en/hire-me/` (2026-09-30).
 
 **Fase 2 — Contenido y prueba de valor.**
 - Reescribir el copy de cada sección con el lenguaje correcto por audiencia.
 - Reformular proyectos como casos con resultado de negocio (para servicios) y con profundidad técnica (para `/hire-me`).
-- CV descargable en PDF.
+- ~~CV descargable en PDF.~~ Hecho en Fase 1.
 - Testimonios si existen (o pedirlos a clientes/excompañeros).
 
 **Fase 3 — Medición y crecimiento.**
@@ -125,7 +125,7 @@ El resto de la home se simplifica: menos "linktree personal" (Instagram puede ba
 
 - **Disponibilidad:** ambos — abierto a full-time y a freelance por proyecto, sin preferencia marcada. `/hire-me` y la sección de servicios deben coexistir sin que una reste peso a la otra.
 - **Modalidad y ubicación:** actualmente en Bogotá, abierto a híbrido/presencial local con posibilidad de reubicación, y también a remoto internacional. `/hire-me` debe mostrar esto explícitamente (ubicación actual + apertura a reubicación + remoto) para no filtrar oportunidades por defecto.
-- **CV:** ya existe un CV en PDF actualizado — se enlaza/descarga directo desde `/hire-me` (falta que Jhon lo entregue como archivo para incluirlo en `public/`).
+- **CV:** entregado en PDF en ambos idiomas (2026-09-30) — se descarga directo desde `/hire-me` (`public/cv/jhon-tequia-{es,en}.pdf`).
 - **LinkedIn:** activo (`https://www.linkedin.com/in/xenthrall/`, confirmado 2026-09-30) — enlazado junto al CV en `/hire-me` y en `social-links.ts`.
 - **Precios en servicios B2B:** solo "cotización a medida", sin cifras públicas. El CTA de servicios debe llevar a conversación (formulario/WhatsApp), no a una tabla de precios.
 - **Testimonios:** no hay ninguno todavía. La sección de prueba social queda fuera de la Fase 1/2 y se agrega más adelante cuando existan (Operación Sistémica S.A.S. o algún cliente freelance son las fuentes más probables).
@@ -160,7 +160,6 @@ El resto de la home se simplifica: menos "linktree personal" (Instagram puede ba
 
 ## 12. Decisiones aún pendientes
 
-- Entregar el archivo del CV en PDF para incluirlo en el sitio (posiblemente en dos idiomas si aplica).
 - Confirmar si el enfoque "linktree" (Instagram, etc.) se conserva tal cual o se relega a footer para no restar seriedad profesional frente a ambas audiencias.
 
 ## 13. Notas (espacio personal de escritura)
