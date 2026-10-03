@@ -41,10 +41,47 @@ export function workCover(work: Work): ImageMetadata | undefined {
   return projectImages.find(({ slug, file }) => slug === workSlug(work) && COVER_FILE.test(file))?.image;
 }
 
-// Guardián del orden: una imagen en la carpeta de un proyecto que ningún
-// idioma referencia (borradores incluidos) hace fallar el build, para que no
-// se acumulen capturas viejas. Las referencias rotas ya las detecta Astro.
-function assertNoOrphanImages(all: Work[]) {
+// Video demo: como la portada, se detecta por nombre (demo.mp4 o demo.webm) y
+// se muestra arriba en la ficha, con la portada como póster. Markdown no
+// puede incrustar videos, por eso no se referencia desde el texto.
+const DEMO_FILE = /^demo\.(?:mp4|webm)$/;
+
+const demoModules = import.meta.glob<string>("/src/content/proyectos/*/demo.{mp4,webm}", {
+  eager: true,
+  query: "?url",
+  import: "default",
+});
+
+export function workDemo(work: Work): { src: string; type: string } | undefined {
+  const entry = Object.entries(demoModules).find(([path]) => path.split("/").at(-2) === workSlug(work));
+  if (!entry) return undefined;
+  const [path, src] = entry;
+  return { src, type: path.endsWith(".webm") ? "video/webm" : "video/mp4" };
+}
+
+// Todos los archivos de las carpetas de proyectos (sin importarlos: solo las
+// rutas), para detectar los que no siguen la convención.
+const projectFiles = Object.keys(import.meta.glob("/src/content/proyectos/*/*")).flatMap((path) => {
+  const [, slug, file] = path.match(/^\/src\/content\/proyectos\/([^/]+)\/([^/]+)$/) ?? [];
+  return slug && !slug.startsWith("_") ? [{ slug, file }] : [];
+});
+
+// Guardián del orden (docs/proyectos.md, Imágenes):
+// - cada archivo de la carpeta de un proyecto es un texto por idioma, una
+//   imagen o el video demo;
+// - cada imagen (salvo la portada) la referencia algún idioma, borradores
+//   incluidos, para que no se acumulen capturas viejas.
+// Las referencias rotas ya las detecta Astro.
+function assertProjectFolders(all: Work[]) {
+  for (const { slug, file } of projectFiles) {
+    const known = /^[a-z]{2}\.md$/.test(file) || DEMO_FILE.test(file) || projectImages.some((image) => image.slug === slug && image.file === file);
+    if (!known) {
+      throw new Error(
+        `Archivo no reconocido: src/content/proyectos/${slug}/${file}. Se esperan es.md/en.md, imágenes (portada, ui-…, diagrama-…, datos-…) o demo.mp4.`,
+      );
+    }
+  }
+
   for (const { slug, file } of projectImages) {
     if (COVER_FILE.test(file)) continue;
     const used = all.some((work) => workSlug(work) === slug && work.body?.includes(`./${file}`));
@@ -67,7 +104,7 @@ let allWorkPromise: Promise<Work[]> | undefined;
 // enlace o un icono roto, o dejar basura en el repo.
 function getAllWork(): Promise<Work[]> {
   allWorkPromise ??= getCollection("proyectos").then((everything) => {
-    assertNoOrphanImages(everything);
+    assertProjectFolders(everything);
 
     const all = everything.filter((work) => import.meta.env.DEV || !work.data.draft);
     const ids = new Set(all.map((work) => work.id));

@@ -18,6 +18,7 @@ import {
   workPaths,
   workStack,
   workCover,
+  workDemo,
   type Work,
 } from "../../lib/projects";
 
@@ -34,6 +35,9 @@ const { builtOn, foundationOf } = await getRelations(work);
 const { title, kind, status, kicker, description, hypothesis, since, promotedOn, url, repo, license } = work.data;
 const section = strings.work[kind];
 const cover = workCover(work);
+const demo = workDemo(work);
+// Con video demo, la portada hace de póster (lo que se ve antes de reproducir).
+const poster = demo && cover ? await getImage({ src: cover, width: 1600, format: "webp" }) : undefined;
 // La portada también es la imagen al compartir el enlace (1200 px de ancho).
 const shareImage = cover ? await getImage({ src: cover, width: 1200, format: "jpg" }) : undefined;
 const hasBody = Boolean(work.body?.replace(/<!--[\s\S]*?-->/g, "").trim());
@@ -158,10 +162,18 @@ const relationGroups = [
       </aside>
 
       {
-        cover && (
+        demo ? (
           <figure class="tile m-0 overflow-hidden p-0 @3xl:col-span-12">
-            <Image src={cover} alt={title} widths={[640, 1200, 1800]} sizes="(min-width: 1180px) 1180px, 100vw" class="block h-auto w-full" />
+            <video controls playsinline preload="metadata" poster={poster?.src} class="block h-auto w-full bg-black">
+              <source src={demo.src} type={demo.type} />
+            </video>
           </figure>
+        ) : (
+          cover && (
+            <figure class="tile m-0 overflow-hidden p-0 @3xl:col-span-12">
+              <Image src={cover} alt={title} widths={[640, 1200, 1800]} sizes="(min-width: 1180px) 1180px, 100vw" class="block h-auto w-full" />
+            </figure>
+          )
         )
       }
 

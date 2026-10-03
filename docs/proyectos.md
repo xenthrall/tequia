@@ -42,8 +42,9 @@ Opcionales: solo donde aporten. Van en la carpeta del proyecto y se nombran seg�
 | `ui-<qué>.webp` | Capturas de la interfaz: `ui-boveda.webp`, `ui-simulador.webp`. |
 | `diagrama-<qué>.svg` | Arquitectura y flujos (Excalidraw → SVG). Se muestran sobre fondo blanco para que se lean en modo oscuro. |
 | `datos-<qué>.webp` | Modelos de datos, tablas, esquemas. |
+| `demo.mp4` | Video demo (o `demo.webm`). Uno por proyecto. Se muestra arriba en la ficha en lugar de la portada, que pasa a ser su póster (la imagen antes de reproducir). Como la portada, no se referencia desde el texto. Idealmente corto y de pocos MB. |
 
-Minúsculas, con guiones, sin tildes. Para usarlas en el texto, **siempre con `./`**, y el pie de foto en la línea siguiente (sin línea en blanco en medio), en cursiva y con la fecha de la captura:
+Minúsculas, con guiones, sin tildes. Puedes subir capturas en `.png`: Astro las convierte a `.webp` liviano al publicar. Para usarlas en el texto, **siempre con `./`**, y el pie de foto en la línea siguiente (sin línea en blanco en medio), en cursiva y con la fecha de la captura:
 
 ```md
 ![Simulador de arranque a tamaño real](./ui-simulador.webp)
@@ -55,6 +56,7 @@ La fecha hace que una captura vieja se lea como una foto de ese momento, no como
 **El build vigila el orden:**
 - Imagen referenciada que no existe → falla (`ImageNotFound`).
 - Imagen en la carpeta que ningún idioma usa → falla (`Imagen sin usar: …`). Úsala o bórrala. La `portada` es la excepción.
+- Cualquier otro archivo en la carpeta de un proyecto (un `.txt`, un video con otro nombre…) → falla (`Archivo no reconocido: …`).
 
 ## Frontmatter
 
