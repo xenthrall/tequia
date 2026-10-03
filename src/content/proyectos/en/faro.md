@@ -12,6 +12,9 @@ stack: [React, TypeScript, Vite, Supabase, PostgreSQL, Tailwind CSS]
 preview: dashboard
 ---
 
-Faro explores how far a lightweight stack (a static frontend plus Supabase) can go in handling the day-to-day management of a small business, with no servers of its own to maintain or pay for.
+Faro is a management system for small businesses, and the experiment is to build it on zero or near-zero cost infrastructure, making the most of free services:
 
-There's a public demo you can try.
+- **Data and backend** on Supabase's free tier, which is quite generous.
+- **A static frontend** (React and Vite) published on free static hosting, such as GitHub Pages.
+
+No servers of its own to maintain or pay for. There's a public demo you can try.

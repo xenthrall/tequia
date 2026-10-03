@@ -10,6 +10,9 @@ import {
   siPostgresql,
   siSqlite,
   siDocker,
+  siPython,
+  siFastapi,
+  siGo,
   type SimpleIcon,
 } from "simple-icons";
 
@@ -28,4 +31,7 @@ export const technologies: Record<string, SimpleIcon> = {
   PostgreSQL: siPostgresql,
   SQLite: siSqlite,
   Docker: siDocker,
+  Python: siPython,
+  FastAPI: siFastapi,
+  Go: siGo,
 };

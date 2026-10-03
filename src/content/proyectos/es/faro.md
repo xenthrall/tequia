@@ -12,8 +12,9 @@ stack: [React, TypeScript, Vite, Supabase, PostgreSQL, Tailwind CSS]
 preview: dashboard
 ---
 
-<!-- Jhon: revisa la hipótesis y amplía. Ideas: qué señal te diría que funcionó (y que vale la pena promoverlo a proyecto). -->
+Faro es un sistema de gestión para pequeños negocios, y el experimento es construirlo con infraestructura de costo cero o casi nada, aprovechando servicios gratuitos:
 
-Faro explora qué tan lejos se puede llegar con un stack ligero (frontend estático y Supabase) para resolver la gestión diaria de un pequeño negocio, sin servidores propios que mantener ni pagar.
+- **Datos y backend** en el plan gratuito de Supabase, que es bastante generoso.
+- **Frontend estático** (React y Vite) publicado en un hosting gratuito de páginas estáticas, como GitHub Pages.
 
-Hay una demo pública para probarlo.
+Sin servidores propios que mantener ni pagar. Hay una demo pública para probarlo.
