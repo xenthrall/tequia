@@ -1,0 +1,27 @@
+---
+// Página índice de proyectos o de experimentos en un idioma.
+import PageShell from "../../layouts/PageShell.astro";
+import WorkSection from "./WorkSection.astro";
+import { getProfile } from "../../data/profile";
+import { getStrings } from "../../i18n/strings";
+import { sectionLocalePaths, type Locale } from "../../i18n/config";
+import type { WorkKind } from "../../lib/projects";
+
+interface Props {
+  locale: Locale;
+  kind: WorkKind;
+}
+
+const { locale, kind } = Astro.props;
+const section = getStrings(locale).work[kind];
+const profile = getProfile(locale);
+---
+
+<PageShell
+  locale={locale}
+  title={`${section.title} — ${profile.name}`}
+  description={section.intro}
+  localePaths={sectionLocalePaths(kind === "project" ? "projects" : "experiments")}
+>
+  <WorkSection locale={locale} kind={kind} showIntro />
+</PageShell>

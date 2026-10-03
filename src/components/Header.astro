@@ -1,7 +1,7 @@
 ---
 import { uiIcons } from "../icons/ui";
 import { getStrings } from "../i18n/strings";
-import { localizedPath, type Locale, type LocalePaths } from "../i18n/config";
+import { localizedPath, sectionPath, type Locale, type LocalePaths } from "../i18n/config";
 import { notesIndexPath } from "../lib/notes";
 import LanguageSwitcher from "./LanguageSwitcher.astro";
 
@@ -15,17 +15,23 @@ const strings = getStrings(locale);
 
 const homePath = localizedPath("/", locale);
 
+// Proyectos, experimentos y notas marcan "página actual" en cualquier subruta
+// (ficha, etiqueta, página N). Ver docs/vision.md §0.
 const navLinks: { href: string; label: string; matchPrefix?: boolean }[] = [
-  { href: localizedPath("/services/", locale), label: strings.header.nav.services },
-  { href: localizedPath("/hire-me/", locale), label: strings.header.nav.hireMe },
-  // Notas marca "página actual" en cualquier subruta (nota, etiqueta, página N).
+  { href: sectionPath(locale, "projects"), label: strings.header.nav.projects, matchPrefix: true },
+  { href: sectionPath(locale, "experiments"), label: strings.header.nav.experiments, matchPrefix: true },
   { href: notesIndexPath(locale), label: strings.header.nav.notes, matchPrefix: true },
 ];
+
+// "Trabajemos" va aparte, con el punto de disponibilidad, y también se marca
+// en /services y /hire-me, que cuelgan de ella.
+const workLink = { href: sectionPath(locale, "work"), label: strings.header.nav.work };
+const workPaths = [workLink.href, localizedPath("/services/", locale), localizedPath("/hire-me/", locale)];
 
 const currentPath = Astro.url.pathname.replace(/\/?$/, "/");
 const isHome = currentPath === homePath;
 const isCurrent = (link: { href: string; matchPrefix?: boolean }) =>
-  link.matchPrefix ? currentPath.startsWith(link.href) : currentPath === link.href;
+  link === workLink ? workPaths.includes(currentPath) : link.matchPrefix ? currentPath.startsWith(link.href) : currentPath === link.href;
 ---
 
 <header class="flex items-center justify-between gap-3 pb-[18px] pt-2">
@@ -39,7 +45,7 @@ const isCurrent = (link: { href: string; matchPrefix?: boolean }) =>
       !isHome && (
         <a
           href={homePath}
-          class="mr-1 hidden items-center gap-1.5 rounded-full border border-[var(--border)] bg-[var(--card)] py-[7px] pl-2.5 pr-3.5 text-[0.86rem] font-medium text-[var(--text)] no-underline transition duration-150 hover:border-[var(--text)] sm:inline-flex [&_svg]:h-4 [&_svg]:w-4"
+          class="mr-1 hidden items-center gap-1.5 rounded-full border border-[var(--border)] bg-[var(--card)] py-[7px] pl-2.5 pr-3.5 text-[0.86rem] font-medium text-[var(--text)] no-underline transition duration-150 hover:border-[var(--text)] lg:inline-flex [&_svg]:h-4 [&_svg]:w-4"
         >
           <Fragment set:html={uiIcons.arrowLeft} />
           {strings.header.nav.home}
@@ -52,12 +58,21 @@ const isCurrent = (link: { href: string; matchPrefix?: boolean }) =>
         <a
           href={link.href}
           aria-current={isCurrent(link) ? "page" : undefined}
-          class="hidden rounded-full px-3 py-[7px] text-[0.86rem] text-[var(--muted)] no-underline transition duration-150 hover:bg-[var(--card)] hover:text-[var(--text)] aria-[current=page]:text-[var(--text)] sm:block"
+          class="hidden rounded-full px-3 py-[7px] text-[0.86rem] text-[var(--muted)] no-underline transition duration-150 hover:bg-[var(--card)] hover:text-[var(--text)] aria-[current=page]:text-[var(--text)] md:block"
         >
           {link.label}
         </a>
       ))
     }
+
+    <a
+      href={workLink.href}
+      aria-current={isCurrent(workLink) ? "page" : undefined}
+      class="ml-1 hidden items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--card)] py-[7px] pl-3 pr-3.5 text-[0.86rem] font-medium text-[var(--text)] no-underline transition duration-150 hover:border-[var(--accent)] aria-[current=page]:border-[var(--accent)] md:inline-flex"
+    >
+      <span class="h-1.5 w-1.5 rounded-full bg-emerald-400" aria-hidden="true"></span>
+      {workLink.label}
+    </a>
 
     <button
       class="grid h-9 w-9 place-items-center rounded-full text-[var(--muted)] transition duration-150 hover:bg-[var(--card)] hover:text-[var(--text)] active:scale-[0.94] [&_svg]:h-[18px] [&_svg]:w-[18px] [&_svg]:animate-[icon-pop_260ms_ease]"
@@ -70,8 +85,8 @@ const isCurrent = (link: { href: string; matchPrefix?: boolean }) =>
 
     <LanguageSwitcher locale={locale} localePaths={localePaths} />
 
-    <!-- En móvil los enlaces de arriba se ocultan: este menú los reemplaza. -->
-    <details class="relative sm:hidden" data-dropdown>
+    <!-- En pantallas angostas los enlaces de arriba se ocultan: este menú los reemplaza. -->
+    <details class="relative md:hidden" data-dropdown>
       <summary
         class="grid h-9 w-9 cursor-pointer list-none place-items-center rounded-full text-[var(--text)] transition duration-150 marker:content-none hover:bg-[var(--card)] [&::-webkit-details-marker]:hidden [&_svg]:h-[20px] [&_svg]:w-[20px]"
         aria-label={strings.header.menu}
@@ -81,7 +96,7 @@ const isCurrent = (link: { href: string; matchPrefix?: boolean }) =>
 
       <div class="absolute right-0 top-[calc(100%+8px)] z-10 min-w-[180px] overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--card)] py-1 shadow-[0_14px_40px_rgba(0,0,0,0.18)]">
         {
-          [{ href: homePath, label: strings.header.nav.home }, ...navLinks].map((link) => (
+          [{ href: homePath, label: strings.header.nav.home }, ...navLinks, workLink].map((link) => (
             <a
               href={link.href}
               aria-current={isCurrent(link) ? "page" : undefined}

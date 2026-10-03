@@ -1,0 +1,20 @@
+---
+import PageShell from "../../layouts/PageShell.astro";
+import WorkWithMeContent from "../../components/WorkWithMeContent.astro";
+import { getStrings } from "../../i18n/strings";
+import { getProfile } from "../../data/profile";
+import { sectionLocalePaths } from "../../i18n/config";
+
+const locale = "en" as const;
+const strings = getStrings(locale);
+const profile = getProfile(locale);
+---
+
+<PageShell
+  locale={locale}
+  title={`${strings.workWithMe.title} — ${profile.name}`}
+  description={strings.workWithMe.intro}
+  localePaths={sectionLocalePaths("work")}
+>
+  <WorkWithMeContent locale={locale} />
+</PageShell>

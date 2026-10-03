@@ -1,0 +1,58 @@
+---
+// Tarjeta de un proyecto o experimento: lleva a su ficha. El destacado de la
+// sección ocupa el bloque grande del tablero.
+import { renderBrandIcon } from "../../icons/brands";
+import { getStrings } from "../../i18n/strings";
+import ProjectPreview from "../ProjectPreview.astro";
+import { formatMonth, workLocale, workPath, workStack, type Work } from "../../lib/projects";
+
+interface Props {
+  work: Work;
+  class?: string;
+}
+
+const { work, class: className } = Astro.props;
+const locale = workLocale(work);
+const strings = getStrings(locale);
+const { title, kind, status, kicker, description, hypothesis, preview, featured, license, since } = work.data;
+---
+
+<a href={workPath(work)} class:list={["tile group flex flex-col gap-2.5", className]}>
+  <div class="flex items-center justify-between gap-2">
+    <span class="eyebrow">{kicker}</span>
+    <span class="flex flex-wrap justify-end gap-1.5">
+      {license && <span class="badge">Open source · {license}</span>}
+      <span class:list={["badge", status !== "active" && "!bg-[var(--card-hover)] !text-[var(--muted)]"]}>
+        {strings.work[kind].status[status]}
+      </span>
+    </span>
+  </div>
+
+  <h3
+    class:list={[
+      "display m-0 leading-[1.05] tracking-[-0.02em] text-[var(--text)] transition-colors duration-150 group-hover:text-[var(--accent)]",
+      featured ? "text-[clamp(2rem,4vw,2.8rem)]" : "text-[1.7rem]",
+    ]}
+  >
+    {title}
+  </h3>
+
+  <p class="text-[0.95rem] text-[var(--muted)]">{description}</p>
+
+  {
+    hypothesis && (
+      <p class="border-l-2 border-[var(--accent)] pl-3 font-serif text-[1rem] italic leading-[1.45] text-[var(--text)]">{hypothesis}</p>
+    )
+  }
+
+  {preview && <ProjectPreview locale={locale} type={preview} />}
+
+  <div class="mt-auto flex flex-wrap gap-1.5 pt-1.5">
+    {workStack(work).map(({ name, icon }) => <span class="tag [&_svg]:h-3 [&_svg]:w-3 [&_svg]:opacity-70" set:html={`${renderBrandIcon(icon)}${name}`} />)}
+  </div>
+
+  <span class="flex items-center justify-between pt-1 text-[0.85rem] font-semibold text-[var(--accent)]">
+    <span class="eyebrow">{since && `${strings.work.since} ${formatMonth(since, locale)}`}</span>
+    <span aria-hidden="true" class="inline-block transition-transform duration-150 group-hover:translate-x-0.5">→</span>
+  </span>
+</a>

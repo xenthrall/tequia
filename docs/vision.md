@@ -1,7 +1,20 @@
 # Visión del proyecto — tequia.dev
 
-> Documento vivo. Última actualización: 2026-09-18.
+> Documento vivo. Última actualización: 2026-10-03.
 > Objetivo: dejar por escrito hacia dónde va este sitio antes de tocar código, para que cada cambio futuro (copy, rutas, componentes) se pueda evaluar contra un criterio claro.
+
+## 0. Giro de enfoque (2026-10-03) — leer primero
+
+> **El sitio deja de ser un embudo de ventas y pasa a ser el taller de Jhon.** Lo primero que ve un visitante es lo que Jhon construye (proyectos), lo que prueba (experimentos), lo que piensa (notas) y, más adelante, lo que investiga a fondo (investigaciones). La disponibilidad para trabajar se mantiene, pero como un **estado** discreto ("Ahora mismo: abierto a…"), no como la puerta de entrada.
+
+Motivo (palabras de Jhon): al entrar, el sitio "parece que me estuviera vendiendo u ofreciendo servicios", y quiere que se enfoque en sus proyectos, investigaciones y notas.
+
+Consecuencias sobre las secciones 1–8 (que se conservan como historia):
+- La bifurcación de audiencias (§5, `AudienceSplit`) **sale de la home** y vive en la página "Trabajemos" (`/es/trabajemos/`, `/en/work-with-me/`), que agrupa `/services` y `/hire-me`. Ambas páginas siguen existiendo tal cual.
+- La navegación principal pasa a ser: Proyectos · Experimentos · Notas · *(Investigaciones, futuro)* · **Trabajemos** (con indicador de disponibilidad).
+- El objetivo de negocio de §1 sigue vigente, pero subordinado: el sitio convence mostrando trabajo real, no ofreciéndolo.
+
+Detalle de la nueva estructura en §14 (proyectos y experimentos) y §15 (investigaciones, futuro).
 
 ## 1. Objetivo de negocio
 
@@ -160,6 +173,8 @@ El resto de la home se simplifica: menos "linktree personal" (Instagram puede ba
 
 ## 12. Decisiones aún pendientes
 
+- ~~Bifurcación en la home~~ Resuelto en §0: sale de la home.
+
 - Confirmar si el enfoque "linktree" (Instagram, etc.) se conserva tal cual o se relega a footer para no restar seriedad profesional frente a ambas audiencias.
 
 ## 13. Notas (espacio personal de escritura)
@@ -174,3 +189,29 @@ El resto de la home se simplifica: menos "linktree personal" (Instagram puede ba
 - **Escala:** pensado para cientos de notas: subcarpetas por año en el repo, paginación de 20, temas con conteo, borradores (`draft`), y validación en build de las referencias de traducción.
 
 Guía práctica de escritura y publicación: `docs/notas.md`.
+
+## 14. Proyectos y experimentos (2026-10-03)
+
+Dos niveles de compromiso, una sola colección de contenido (`src/content/proyectos/`, guía práctica en `docs/proyectos.md`):
+
+- **Proyectos** (`kind: project`): cosas en las que Jhon invierte mucho tiempo porque cree que son importantes, y en las que va a seguir trabajando. Hoy: **Atlas** (boilerplate / plataforma base donde investiga y pone a prueba su arquitectura) y **Café del Tiempo** (construido sobre la base y los conceptos de Atlas; campo `builtOn`).
+- **Experimentos** (`kind: experiment`): ideas a prueba, con una pregunta (`hypothesis`) que intentan responder. Hoy: **Faro**.
+
+**Ciclo de vida de un experimento:**
+- *Funcionó* → se **promueve** a proyecto: `kind: project` + `promotedOn: <fecha>`. La URL vieja (`/experimentos/<slug>/`) redirige sola a la nueva y la ficha muestra "empezó como experimento".
+- *No funcionó* → `status: archived`, con lo aprendido escrito en el cuerpo. **No se borra**: mostrar lo que no salió es parte de la identidad del sitio.
+
+Rutas: `/es/proyectos/`, `/es/experimentos/`, `/en/projects/`, `/en/experiments/`, cada uno con ficha propia por slug. El slug es el mismo en ambos idiomas (son nombres propios).
+
+## 15. Investigaciones (futuro, sin implementar)
+
+Sección para documentar investigaciones más profundas que requieren tiempo y seguimiento. Se diferencia de las notas así:
+
+| | Nota | Investigación |
+|---|---|---|
+| Ciclo | Se escribe una vez y queda como foto de un momento | Viva: se actualiza durante semanas o meses |
+| Estructura | Texto libre | Pregunta central → bitácora de entradas fechadas → conclusiones |
+| Estado | Publicada | En curso / pausada / concluida |
+| Relación | Puede mencionar proyectos | Suele alimentar a un proyecto o experimento (y viceversa) |
+
+Ideas para cuando se implemente: colección propia (`src/content/investigaciones/`), una investigación como carpeta con un `index.md` (pregunta, contexto, estado) y un archivo por entrada de bitácora; RSS propio para quien quiera seguir una investigación; enlaces cruzados con `proyectos` (p.ej. "Atlas" ↔ "investigación sobre arquitectura modular"). La navegación ya está pensada para recibirla entre Notas y Trabajemos.

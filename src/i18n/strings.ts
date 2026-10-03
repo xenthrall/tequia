@@ -1,12 +1,21 @@
 import type { Locale } from "./config";
 
+export interface WorkSectionStrings {
+  title: string;
+  heading: { lead: string; emphasis: string };
+  intro: string;
+  count: (n: number) => string;
+  status: { active: string; paused: string; archived: string };
+  backTo: string;
+}
+
 export interface UiStrings {
   header: {
     themeToggle: string;
     languageSwitcher: string;
     backToHome: string;
     menu: string;
-    nav: { home: string; services: string; hireMe: string; notes: string };
+    nav: { home: string; projects: string; experiments: string; notes: string; work: string; services: string; hireMe: string };
   };
   hero: {
     clockLabel: string;
@@ -21,11 +30,34 @@ export interface UiStrings {
     links: string;
     contact: string;
   };
-  projects: {
+  work: {
+    // Una entrada por `kind` de la colección de proyectos.
+    project: WorkSectionStrings;
+    experiment: WorkSectionStrings;
+    hypothesis: string;
+    since: string;
+    promoted: (date: string) => string;
+    builtOn: string;
+    foundationOf: string;
+    stack: string;
+    visit: string;
+    code: string;
+    viewAll: string;
+    // Bloque que explica el ciclo de vida de un experimento.
+    lifecycle: { title: string; description: string };
+  };
+  availability: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    cta: string;
+  };
+  workWithMe: {
+    title: string;
     heading: { lead: string; emphasis: string };
-    countLabel: string;
-    featured: string;
-    viewProject: string;
+    intro: string;
+  };
+  projects: {
     vaultPreview: {
       vault: string;
       finance: string;
@@ -33,10 +65,6 @@ export interface UiStrings {
       items: string[];
       report: string;
     };
-  };
-  about: {
-    heading: { lead: string; emphasis: string; trail: string };
-    eyebrow: string;
   };
   contact: {
     title: string;
@@ -105,7 +133,7 @@ const en: UiStrings = {
     languageSwitcher: "Change language",
     backToHome: "Back to home",
     menu: "Menu",
-    nav: { home: "Home", services: "Services", hireMe: "Hire me", notes: "Notes" },
+    nav: { home: "Home", projects: "Projects", experiments: "Experiments", notes: "Notes", work: "Work with me", services: "Services", hireMe: "Hire me" },
   },
   hero: {
     clockLabel: "Local time · Bogotá",
@@ -126,11 +154,49 @@ const en: UiStrings = {
     links: "Links",
     contact: "Contact",
   },
+  work: {
+    project: {
+      title: "Projects",
+      heading: { lead: "What I'm", emphasis: "building" },
+      intro: "The things I put serious time into because I believe they matter, and that I'll keep working on.",
+      count: (n) => `${n} ${n === 1 ? "project" : "projects"}`,
+      status: { active: "Active", paused: "Paused", archived: "Archived" },
+      backTo: "All projects",
+    },
+    experiment: {
+      title: "Experiments",
+      heading: { lead: "In the", emphasis: "lab" },
+      intro: "Ideas on trial. If they work, they become a project; if not, they stay here with what I learned.",
+      count: (n) => `${n} ${n === 1 ? "experiment" : "experiments"}`,
+      status: { active: "Running", paused: "Paused", archived: "Discarded" },
+      backTo: "All experiments",
+    },
+    hypothesis: "The question",
+    since: "Since",
+    promoted: (date) => `Started as an experiment · promoted ${date}`,
+    builtOn: "Built on",
+    foundationOf: "Foundation of",
+    stack: "Stack",
+    visit: "Visit",
+    code: "Code",
+    viewAll: "View all",
+    lifecycle: {
+      title: "How an experiment grows",
+      description: "Every experiment tries to answer one question. If it works, it gets promoted to a project; if it doesn't, it stays archived here with what I learned.",
+    },
+  },
+  availability: {
+    eyebrow: "Right now",
+    title: "Open to new opportunities",
+    description: "I'm looking for a full-time role, in Bogotá or remote, and I take on freelance projects. If something here is useful to you, let's talk.",
+    cta: "Work with me",
+  },
+  workWithMe: {
+    title: "Work with me",
+    heading: { lead: "Let's work", emphasis: "together" },
+    intro: "Whether you're hiring for your team or need software for your business, here's where to start.",
+  },
   projects: {
-    heading: { lead: "What I'm", emphasis: "building" },
-    countLabel: "projects",
-    featured: "Featured project",
-    viewProject: "View project",
     vaultPreview: {
       vault: "Vault",
       finance: "Finance",
@@ -138,10 +204,6 @@ const en: UiStrings = {
       items: ["Credential", "Confidential note", "Time capsule"],
       report: "Monthly report",
     },
-  },
-  about: {
-    heading: { lead: "A bit", emphasis: "more", trail: "about me" },
-    eyebrow: "Experience · stack",
   },
   contact: {
     title: "Have an idea? Let's talk.",
@@ -218,7 +280,7 @@ const es: UiStrings = {
     languageSwitcher: "Cambiar idioma",
     backToHome: "Volver al inicio",
     menu: "Menú",
-    nav: { home: "Inicio", services: "Servicios", hireMe: "Contratar", notes: "Notas" },
+    nav: { home: "Inicio", projects: "Proyectos", experiments: "Experimentos", notes: "Notas", work: "Trabajemos", services: "Servicios", hireMe: "Contratar" },
   },
   hero: {
     clockLabel: "Hora local · Bogotá",
@@ -239,11 +301,49 @@ const es: UiStrings = {
     links: "Enlaces",
     contact: "Contacto",
   },
+  work: {
+    project: {
+      title: "Proyectos",
+      heading: { lead: "Lo que estoy", emphasis: "construyendo" },
+      intro: "Las cosas en las que invierto tiempo en serio porque creo que son importantes, y en las que voy a seguir trabajando.",
+      count: (n) => `${n} ${n === 1 ? "proyecto" : "proyectos"}`,
+      status: { active: "Activo", paused: "En pausa", archived: "Archivado" },
+      backTo: "Todos los proyectos",
+    },
+    experiment: {
+      title: "Experimentos",
+      heading: { lead: "En el", emphasis: "laboratorio" },
+      intro: "Ideas a prueba. Si funcionan, se convierten en proyecto; si no, quedan aquí con lo que aprendí.",
+      count: (n) => `${n} ${n === 1 ? "experimento" : "experimentos"}`,
+      status: { active: "En curso", paused: "En pausa", archived: "Descartado" },
+      backTo: "Todos los experimentos",
+    },
+    hypothesis: "La pregunta",
+    since: "Desde",
+    promoted: (date) => `Empezó como experimento · promovido en ${date}`,
+    builtOn: "Construido sobre",
+    foundationOf: "Base de",
+    stack: "Stack",
+    visit: "Visitar",
+    code: "Código",
+    viewAll: "Ver todos",
+    lifecycle: {
+      title: "Cómo crece un experimento",
+      description: "Cada experimento intenta responder una pregunta. Si funciona, pasa a ser proyecto; si no, queda archivado aquí con lo que aprendí.",
+    },
+  },
+  availability: {
+    eyebrow: "Ahora mismo",
+    title: "Abierto a nuevas oportunidades",
+    description: "Busco un rol de tiempo completo, en Bogotá o remoto, y tomo proyectos freelance. Si algo de lo que ves aquí te sirve, hablemos.",
+    cta: "Trabajemos",
+  },
+  workWithMe: {
+    title: "Trabajemos",
+    heading: { lead: "Trabajemos", emphasis: "juntos" },
+    intro: "Si buscas talento para tu equipo o software para tu negocio, por aquí se empieza.",
+  },
   projects: {
-    heading: { lead: "Lo que estoy", emphasis: "construyendo" },
-    countLabel: "proyectos",
-    featured: "Proyecto destacado",
-    viewProject: "Ver proyecto",
     vaultPreview: {
       vault: "Bóveda",
       finance: "Finanzas",
@@ -251,10 +351,6 @@ const es: UiStrings = {
       items: ["Credencial", "Nota confidencial", "Cápsula del tiempo"],
       report: "Reporte del mes",
     },
-  },
-  about: {
-    heading: { lead: "Un poco", emphasis: "más", trail: "de mí" },
-    eyebrow: "Experiencia · stack",
   },
   contact: {
     title: "¿Tienes una idea? Conversemos.",

@@ -1,0 +1,21 @@
+---
+import WorkView from "../../../components/work/WorkView.astro";
+import WorkRedirect from "../../../components/work/WorkRedirect.astro";
+import { getWork, workPath, workSlug, type Work } from "../../../lib/projects";
+
+// Además de los experimentos, la URL vieja de cada experimento promovido a
+// proyecto redirige a su ficha nueva (docs/proyectos.md).
+export async function getStaticPaths() {
+  const experiments = await getWork("es", "experiment");
+  const promoted = (await getWork("es", "project")).filter((work) => work.data.promotedOn);
+
+  return [
+    ...experiments.map((work) => ({ params: { slug: workSlug(work) }, props: { work, redirectTo: undefined } })),
+    ...promoted.map((work) => ({ params: { slug: workSlug(work) }, props: { work, redirectTo: workPath(work) } })),
+  ];
+}
+
+const { work, redirectTo } = Astro.props as { work: Work; redirectTo?: string };
+---
+
+{redirectTo ? <WorkRedirect to={redirectTo} /> : <WorkView work={work} />}
