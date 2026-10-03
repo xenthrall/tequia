@@ -2,6 +2,7 @@
 // Ficha completa de un proyecto o experimento: cabecera, panel lateral con
 // metadatos y relaciones (builtOn / base de), y cuerpo en Markdown.
 import { render } from "astro:content";
+import { Image, getImage } from "astro:assets";
 import PageShell from "../../layouts/PageShell.astro";
 import { getProfile } from "../../data/profile";
 import { getStrings } from "../../i18n/strings";
@@ -16,6 +17,7 @@ import {
   workPath,
   workPaths,
   workStack,
+  workCover,
   type Work,
 } from "../../lib/projects";
 
@@ -31,6 +33,9 @@ const { Content } = await render(work);
 const { builtOn, foundationOf } = await getRelations(work);
 const { title, kind, status, kicker, description, hypothesis, since, promotedOn, url, repo, license } = work.data;
 const section = strings.work[kind];
+const cover = workCover(work);
+// La portada también es la imagen al compartir el enlace (1200 px de ancho).
+const shareImage = cover ? await getImage({ src: cover, width: 1200, format: "jpg" }) : undefined;
 const hasBody = Boolean(work.body?.replace(/<!--[\s\S]*?-->/g, "").trim());
 
 const creativeWork = {
@@ -43,6 +48,7 @@ const creativeWork = {
   ...(since && { dateCreated: since.toISOString() }),
   ...(repo && { codeRepository: repo }),
   ...(license && { license }),
+  ...(shareImage && { image: `${siteUrl}${shareImage.src}` }),
   author: { "@type": "Person", name: profile.name, url: siteUrl },
 };
 
@@ -52,7 +58,14 @@ const relationGroups = [
 ].filter((group) => group.items.length > 0);
 ---
 
-<PageShell locale={locale} title={`${title} — ${profile.name}`} description={description} localePaths={await workPaths(work)} jsonLd={[creativeWork]}>
+<PageShell
+  locale={locale}
+  title={`${title} — ${profile.name}`}
+  description={description}
+  localePaths={await workPaths(work)}
+  jsonLd={[creativeWork]}
+  image={shareImage && `${siteUrl}${shareImage.src}`}
+>
   <article class="@container">
     <div class="grid grid-cols-1 gap-3 @3xl:grid-cols-12">
       <header class="tile flex flex-col gap-4 @3xl:col-span-8">
@@ -143,6 +156,14 @@ const relationGroups = [
           )
         }
       </aside>
+
+      {
+        cover && (
+          <figure class="tile m-0 overflow-hidden p-0 @3xl:col-span-12">
+            <Image src={cover} alt={title} widths={[640, 1200, 1800]} sizes="(min-width: 1180px) 1180px, 100vw" class="block h-auto w-full" />
+          </figure>
+        )
+      }
 
       {
         hasBody && (

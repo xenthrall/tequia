@@ -1,6 +1,7 @@
 ---
-# Copia este archivo a src/content/proyectos/<idioma>/<slug>.md
-# (los archivos que empiezan por "_" no se publican). Guía: docs/proyectos.md
+# Copia esta carpeta a src/content/proyectos/<slug>/ (las carpetas que
+# empiezan por "_" no se publican) y crea en.md si quieres la versión en
+# inglés. Las imágenes van en la misma carpeta. Guía: docs/proyectos.md
 title: Nombre
 description: Una o dos frases (máx. 220 caracteres).
 kind: experiment # experiment | project
@@ -18,5 +19,10 @@ draft: true
 ---
 
 Qué es, por qué existe y qué estás aprendiendo con él.
+
+<!-- Imagen (opcional), con pie de foto en la línea siguiente:
+![Qué muestra](./ui-algo.webp)
+*Qué muestra · oct 2026*
+-->
 
 <!-- Si se archiva: escribe aquí qué aprendiste. -->

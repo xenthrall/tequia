@@ -7,23 +7,54 @@ Decisiones de producto en `docs/vision.md` §0 y §14. Esta guía es el "cómo".
 
 ## Flujo
 
-1. Copia `src/content/proyectos/_plantilla.md` a `src/content/proyectos/es/<slug>.md` (y su par en `en/` si quieres la versión en inglés).
-2. Llena el frontmatter y escribe en el cuerpo qué es, por qué existe y qué estás aprendiendo.
+1. Copia la carpeta `src/content/proyectos/_plantilla/` a `src/content/proyectos/<slug>/`.
+2. Llena el frontmatter de `es.md` y escribe en el cuerpo qué es, por qué existe y qué estás aprendiendo. Si quieres la versión en inglés, crea `en.md` al lado.
 3. Mientras tenga `draft: true` solo se ve en `npm run dev`. Quítalo para publicar.
 
 ## Dónde van los archivos
 
+**Un proyecto es una carpeta**: sus textos (uno por idioma) y sus imágenes viven juntos.
+
 ```
 src/content/proyectos/
-  _plantilla.md          ← plantilla (los archivos con "_" no se publican)
-  es/atlas.md            → /es/proyectos/atlas/
-  en/atlas.md            → /en/projects/atlas/
-  es/faro.md             → /es/experimentos/faro/   (kind: experiment)
+  _plantilla/es.md         ← plantilla (las carpetas con "_" no se publican)
+  atlas/
+    es.md                  → /es/proyectos/atlas/
+    en.md                  → /en/projects/atlas/
+    diagrama-modulos.svg   ← imagen compartida por ambos idiomas
+  faro/
+    es.md                  → /es/experimentos/faro/   (kind: experiment)
+    en.md                  → /en/experiments/faro/
 ```
 
-- **La primera carpeta es el idioma** (`es`, `en`).
-- **El slug (nombre del archivo) es el mismo en ambos idiomas**: así el sitio sabe que `es/atlas.md` y `en/atlas.md` son el mismo proyecto (selector de idioma, hreflang). Si solo existe en un idioma, el selector lleva al índice del otro.
-- La carpeta del archivo **no** depende de si es proyecto o experimento: eso lo decide `kind`. Así promover no mueve archivos.
+- **El nombre de la carpeta es el slug** de la URL, igual en todos los idiomas. Minúsculas, sin tildes, con guiones. No lo cambies después de publicar (rompe enlaces compartidos).
+- **El archivo se llama como el idioma**: `es.md`, `en.md`. Si solo existe uno, el selector de idioma lleva al índice del otro.
+- La carpeta **no** depende de si es proyecto o experimento: eso lo decide `kind`. Así promover no mueve archivos.
+- Borrar un proyecto es borrar su carpeta: no quedan imágenes sueltas en otro lado.
+
+## Imágenes
+
+Opcionales: solo donde aporten. Van en la carpeta del proyecto y se nombran según su tipo, para que se agrupen solas:
+
+| Nombre | Para qué |
+|---|---|
+| `portada.webp` | Portada: arriba en la ficha y como **vista previa al compartir el enlace** (LinkedIn, WhatsApp). Una por proyecto, `.webp`, `.png` o `.jpg`, idealmente 1600×900. No se referencia desde el texto: basta con que exista. |
+| `ui-<qué>.webp` | Capturas de la interfaz: `ui-boveda.webp`, `ui-simulador.webp`. |
+| `diagrama-<qué>.svg` | Arquitectura y flujos (Excalidraw → SVG). Se muestran sobre fondo blanco para que se lean en modo oscuro. |
+| `datos-<qué>.webp` | Modelos de datos, tablas, esquemas. |
+
+Minúsculas, con guiones, sin tildes. Para usarlas en el texto, **siempre con `./`**, y el pie de foto en la línea siguiente (sin línea en blanco en medio), en cursiva y con la fecha de la captura:
+
+```md
+![Simulador de arranque a tamaño real](./ui-simulador.webp)
+*Simulador de arranque · oct 2026*
+```
+
+La fecha hace que una captura vieja se lea como una foto de ese momento, no como algo desactualizado. Astro optimiza las imágenes solo (tamaño, formato y carga diferida). En **Café del Tiempo**, solo capturas con datos de prueba.
+
+**El build vigila el orden:**
+- Imagen referenciada que no existe → falla (`ImageNotFound`).
+- Imagen en la carpeta que ningún idioma usa → falla (`Imagen sin usar: …`). Úsala o bórrala. La `portada` es la excepción.
 
 ## Frontmatter
 

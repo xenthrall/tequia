@@ -18,6 +18,43 @@ export function workSlug(work: Work): string {
 }
 
 // ---------------------------------------------------------------------------
+// Imágenes
+// ---------------------------------------------------------------------------
+
+// Imágenes de cada proyecto, en su carpeta junto a es.md / en.md. La portada
+// no se referencia desde el texto: se detecta por nombre (portada.webp, .png
+// o .jpg). El resto se usa desde el Markdown con `./<archivo>`.
+const IMAGE_FILE = /^\/src\/content\/proyectos\/([^_/][^/]*)\/([^/]+\.(?:webp|png|jpe?g|gif|avif|svg))$/;
+const COVER_FILE = /^portada\.(?:webp|png|jpe?g)$/;
+
+const imageModules = import.meta.glob<ImageMetadata>("/src/content/proyectos/*/*.{webp,png,jpg,jpeg,gif,avif,svg}", {
+  eager: true,
+  import: "default",
+});
+
+const projectImages = Object.entries(imageModules).flatMap(([path, image]) => {
+  const match = path.match(IMAGE_FILE);
+  return match ? [{ slug: match[1], file: match[2], image }] : [];
+});
+
+export function workCover(work: Work): ImageMetadata | undefined {
+  return projectImages.find(({ slug, file }) => slug === workSlug(work) && COVER_FILE.test(file))?.image;
+}
+
+// Guardián del orden: una imagen en la carpeta de un proyecto que ningún
+// idioma referencia (borradores incluidos) hace fallar el build, para que no
+// se acumulen capturas viejas. Las referencias rotas ya las detecta Astro.
+function assertNoOrphanImages(all: Work[]) {
+  for (const { slug, file } of projectImages) {
+    if (COVER_FILE.test(file)) continue;
+    const used = all.some((work) => workSlug(work) === slug && work.body?.includes(`./${file}`));
+    if (!used) {
+      throw new Error(`Imagen sin usar: src/content/proyectos/${slug}/${file}. Referénciala con ![...](./${file}) o bórrala.`);
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Consultas
 // ---------------------------------------------------------------------------
 
@@ -25,10 +62,14 @@ let allWorkPromise: Promise<Work[]> | undefined;
 
 // Todo lo publicable (borradores solo en `npm run dev`), en orden de sección:
 // destacado primero, luego `order`, luego el más reciente. Valida una sola vez
-// por build las referencias de `builtOn` y los nombres de `stack`: un error
-// hace fallar el build en vez de publicar un enlace o un icono roto.
+// por build las referencias de `builtOn`, los nombres de `stack` y las
+// imágenes sin usar: un error hace fallar el build en vez de publicar un
+// enlace o un icono roto, o dejar basura en el repo.
 function getAllWork(): Promise<Work[]> {
-  allWorkPromise ??= getCollection("proyectos", (work) => import.meta.env.DEV || !work.data.draft).then((all) => {
+  allWorkPromise ??= getCollection("proyectos").then((everything) => {
+    assertNoOrphanImages(everything);
+
+    const all = everything.filter((work) => import.meta.env.DEV || !work.data.draft);
     const ids = new Set(all.map((work) => work.id));
 
     for (const work of all) {
