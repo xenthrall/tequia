@@ -1,10 +1,8 @@
 ---
 import PageShell from "../../layouts/PageShell.astro";
 import HomeHero from "../../components/HomeHero.astro";
-import AudienceSplit from "../../components/AudienceSplit.astro";
-import Projects from "../../components/Projects.astro";
-import About from "../../components/About.astro";
-import Contact from "../../components/Contact.astro";
+import WorkSection from "../../components/work/WorkSection.astro";
+import Availability from "../../components/Availability.astro";
 import { getProfile } from "../../data/profile";
 
 const locale = "en" as const;
@@ -13,8 +11,7 @@ const profile = getProfile(locale);
 
 <PageShell locale={locale} title={`${profile.name} — ${profile.role}`} description={profile.description}>
   <HomeHero locale={locale} />
-  <AudienceSplit locale={locale} />
-  <Projects locale={locale} />
-  <About locale={locale} />
-  <Contact locale={locale} />
+  <WorkSection locale={locale} kind="project" linkToIndex />
+  <WorkSection locale={locale} kind="experiment" linkToIndex />
+  <Availability locale={locale} />
 </PageShell>

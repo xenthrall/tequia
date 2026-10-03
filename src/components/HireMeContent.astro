@@ -5,7 +5,7 @@ import { socialLinks } from "../data/social-links";
 import { getStrings } from "../i18n/strings";
 import { withBase } from "../lib/base-url";
 import SectionHeading from "./SectionHeading.astro";
-import Projects from "./Projects.astro";
+import WorkSection from "./work/WorkSection.astro";
 import Contact from "./Contact.astro";
 import type { Locale } from "../i18n/config";
 
@@ -113,6 +113,7 @@ const linkedin = socialLinks.find((link) => link.name === "LinkedIn");
   </div>
 </section>
 
-<Projects locale={locale} />
+<WorkSection locale={locale} kind="project" linkToIndex />
+<WorkSection locale={locale} kind="experiment" linkToIndex />
 
 <Contact locale={locale} title={hireMe.ctaLabel} subtitle={hireMe.contactSubtitle} />

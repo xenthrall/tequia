@@ -1,0 +1,30 @@
+---
+// Página "Trabajemos": el único lugar donde el sitio habla de contratar.
+// Disponibilidad, las dos rutas (negocio / reclutador) y el formulario.
+// Ver docs/vision.md §0.
+import Availability from "./Availability.astro";
+import AudienceSplit from "./AudienceSplit.astro";
+import Contact from "./Contact.astro";
+import { getStrings } from "../i18n/strings";
+import type { Locale } from "../i18n/config";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const { workWithMe } = getStrings(locale);
+---
+
+<section class="@container">
+  <div class="tile flex flex-col gap-4">
+    <h1 class="display m-0 text-[clamp(2.4rem,6vw,4rem)] leading-[1.02] text-[var(--text)]">
+      {workWithMe.heading.lead} <em>{workWithMe.heading.emphasis}</em>
+    </h1>
+    <p class="max-w-[56ch] text-[1.02rem] leading-relaxed text-[var(--muted)]">{workWithMe.intro}</p>
+  </div>
+</section>
+
+<Availability locale={locale} showCta={false} />
+<AudienceSplit locale={locale} />
+<Contact locale={locale} />

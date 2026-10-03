@@ -58,3 +58,23 @@ export const notesRoutes: Record<Locale, { base: string; page: string; tags: str
 // en ese idioma: el selector de idioma lleva a `path` (un índice) pero no se
 // declara como hreflang.
 export type LocalePaths = Record<Locale, { path: string; translated: boolean }>;
+
+// Secciones con URL traducida (/es/proyectos/ ↔ /en/projects/). Ver
+// docs/vision.md §14 y §0.
+export type Section = "projects" | "experiments" | "work";
+
+export const sectionRoutes: Record<Locale, Record<Section, string>> = {
+  en: { projects: "projects", experiments: "experiments", work: "work-with-me" },
+  es: { projects: "proyectos", experiments: "experimentos", work: "trabajemos" },
+};
+
+export function sectionPath(locale: Locale, section: Section): string {
+  return `/${locale}/${sectionRoutes[locale][section]}/`;
+}
+
+// Rutas de la página índice de una sección en cada idioma.
+export function sectionLocalePaths(section: Section): LocalePaths {
+  return Object.fromEntries(
+    locales.map(({ code }) => [code, { path: sectionPath(code, section), translated: true }]),
+  ) as LocalePaths;
+}

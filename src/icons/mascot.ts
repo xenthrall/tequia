@@ -1,6 +1,6 @@
 // Mascota del sitio: la misma ilustración pixel-art del favicon, como SVG
 // escalable. Se usa en "Jhon's Assistant", en el bloque de la mascota de la
-// home (About.astro) y en la página 404.
+// home (Availability.astro) y en la página 404.
 let instances = 0;
 
 export function renderMascotIcon(): string {

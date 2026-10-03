@@ -38,4 +38,53 @@ const notas = defineCollection({
   }),
 });
 
-export const collections = { notas };
+// Proyectos y experimentos: una sola colección, un archivo por idioma en
+// src/content/proyectos/<idioma>/<slug>.md. El slug es el mismo en todos los
+// idiomas (son nombres propios). Promover un experimento a proyecto es
+// cambiar `kind` y poner `promotedOn`: no se mueve el archivo. Guía completa
+// en docs/proyectos.md.
+const proyectos = defineCollection({
+  loader: glob({
+    base: "./src/content/proyectos",
+    pattern: "*/**/[!_]*.md",
+    generateId: ({ entry }) => {
+      const [locale] = entry.split("/");
+      if (!isLocale(locale)) {
+        throw new Error(`Proyecto "${entry}": la primera carpeta debe ser un idioma (en, es).`);
+      }
+      const slug = entry.split("/").pop()!.replace(/\.md$/, "");
+      return `${locale}/${slug}`;
+    },
+  }),
+  schema: z.object({
+    title: z.string(),
+    // Resumen de 1-2 frases: tarjeta, buscadores y al compartir.
+    description: z.string().max(220),
+    // project = inversión seria y a largo plazo; experiment = idea a prueba.
+    kind: z.enum(["project", "experiment"]),
+    status: z.enum(["active", "paused", "archived"]).default("active"),
+    // Etiqueta corta sobre el título (ej. "Plataforma base").
+    kicker: z.string(),
+    // Solo experimentos: la pregunta que el experimento intenta responder.
+    hypothesis: z.string().optional(),
+    since: z.coerce.date().optional(),
+    // Fecha en que un experimento pasó a ser proyecto.
+    promotedOn: z.coerce.date().optional(),
+    // Slugs de otros proyectos sobre los que está construido (ej. ["atlas"]).
+    builtOn: z.array(z.string()).default([]),
+    url: z.url().optional(),
+    repo: z.url().optional(),
+    license: z.string().optional(),
+    // Nombres de src/data/technologies.ts.
+    stack: z.array(z.string()).default([]),
+    // Miniatura ilustrativa en la tarjeta (ver ProjectPreview.astro).
+    preview: z.enum(["vault", "dashboard", "modules"]).optional(),
+    // El destacado ocupa el bloque grande de su sección.
+    featured: z.boolean().default(false),
+    // Orden manual dentro de su sección (menor primero).
+    order: z.number().default(100),
+    draft: z.boolean().default(false),
+  }),
+});
+
+export const collections = { notas, proyectos };

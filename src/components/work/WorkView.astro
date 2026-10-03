@@ -1,0 +1,156 @@
+---
+// Ficha completa de un proyecto o experimento: cabecera, panel lateral con
+// metadatos y relaciones (builtOn / base de), y cuerpo en Markdown.
+import { render } from "astro:content";
+import PageShell from "../../layouts/PageShell.astro";
+import { getProfile } from "../../data/profile";
+import { getStrings } from "../../i18n/strings";
+import { siteUrl } from "../../i18n/config";
+import { renderBrandIcon } from "../../icons/brands";
+import { uiIcons } from "../../icons/ui";
+import {
+  formatMonth,
+  getRelations,
+  workIndexPath,
+  workLocale,
+  workPath,
+  workPaths,
+  workStack,
+  type Work,
+} from "../../lib/projects";
+
+interface Props {
+  work: Work;
+}
+
+const { work } = Astro.props;
+const locale = workLocale(work);
+const strings = getStrings(locale);
+const profile = getProfile(locale);
+const { Content } = await render(work);
+const { builtOn, foundationOf } = await getRelations(work);
+const { title, kind, status, kicker, description, hypothesis, since, promotedOn, url, repo, license } = work.data;
+const section = strings.work[kind];
+const hasBody = Boolean(work.body?.replace(/<!--[\s\S]*?-->/g, "").trim());
+
+const creativeWork = {
+  "@context": "https://schema.org",
+  "@type": "CreativeWork",
+  name: title,
+  description,
+  inLanguage: locale,
+  url: `${siteUrl}${workPath(work)}`,
+  ...(since && { dateCreated: since.toISOString() }),
+  ...(repo && { codeRepository: repo }),
+  ...(license && { license }),
+  author: { "@type": "Person", name: profile.name, url: siteUrl },
+};
+
+const relationGroups = [
+  { label: strings.work.builtOn, items: builtOn },
+  { label: strings.work.foundationOf, items: foundationOf },
+].filter((group) => group.items.length > 0);
+---
+
+<PageShell locale={locale} title={`${title} — ${profile.name}`} description={description} localePaths={await workPaths(work)} jsonLd={[creativeWork]}>
+  <article class="@container">
+    <div class="grid grid-cols-1 gap-3 @3xl:grid-cols-12">
+      <header class="tile flex flex-col gap-4 @3xl:col-span-8">
+        <a
+          href={workIndexPath(locale, kind)}
+          class="eyebrow inline-flex w-fit items-center gap-1.5 no-underline transition-colors hover:text-[var(--text)] [&_svg]:h-3.5 [&_svg]:w-3.5"
+        >
+          <Fragment set:html={uiIcons.arrowLeft} />
+          {section.backTo}
+        </a>
+
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="eyebrow">{kicker}</span>
+          <span class:list={["badge", status !== "active" && "!bg-[var(--card-hover)] !text-[var(--muted)]"]}>{section.status[status]}</span>
+          {license && <span class="badge">Open source · {license}</span>}
+        </div>
+
+        <h1 class="display m-0 text-[clamp(2.4rem,6vw,4rem)] leading-[1.02] text-[var(--text)]">{title}</h1>
+
+        <p class="max-w-[60ch] text-[1.02rem] leading-relaxed text-[var(--muted)]">{description}</p>
+
+        {
+          hypothesis && (
+            <div class="flex flex-col gap-1.5 border-l-2 border-[var(--accent)] pl-4">
+              <span class="eyebrow">{strings.work.hypothesis}</span>
+              <p class="font-serif text-[1.3rem] italic leading-[1.35] text-[var(--text)]">{hypothesis}</p>
+            </div>
+          )
+        }
+
+        {
+          (url || repo) && (
+            <div class="flex flex-wrap gap-1.5 pt-1">
+              {url && (
+                <a href={url} target="_blank" rel="noopener noreferrer" class="pill-link">
+                  {strings.work.visit} · {new URL(url).hostname} <span aria-hidden="true">↗</span>
+                </a>
+              )}
+              {repo && (
+                <a href={repo} target="_blank" rel="noopener noreferrer" class="pill-link">
+                  {strings.work.code} <span aria-hidden="true">↗</span>
+                </a>
+              )}
+            </div>
+          )
+        }
+      </header>
+
+      <aside class="tile flex flex-col gap-5 @3xl:col-span-4">
+        {
+          since && (
+            <div class="grid gap-1">
+              <span class="eyebrow">{strings.work.since}</span>
+              <span class="font-serif text-[1.3rem] font-[380] text-[var(--text)]">{formatMonth(since, locale)}</span>
+            </div>
+          )
+        }
+
+        {promotedOn && <p class="badge w-fit whitespace-normal leading-snug">{strings.work.promoted(formatMonth(promotedOn, locale))}</p>}
+
+        {
+          relationGroups.map((group) => (
+            <div class="grid gap-1.5">
+              <span class="eyebrow">{group.label}</span>
+              <ul class="m-0 flex list-none flex-col gap-1 p-0">
+                {group.items.map((other) => (
+                  <li>
+                    <a href={workPath(other)} class="font-serif text-[1.2rem] text-[var(--text)] no-underline transition-colors hover:text-[var(--accent)]">
+                      {other.data.title} <span aria-hidden="true" class="text-[var(--accent)]">→</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+
+        {
+          work.data.stack.length > 0 && (
+            <div class="grid gap-2">
+              <span class="eyebrow">{strings.work.stack}</span>
+              <div class="flex flex-wrap gap-1.5">
+                {workStack(work).map(({ name, icon }) => (
+                  <span class="tag [&_svg]:h-3 [&_svg]:w-3 [&_svg]:opacity-70" set:html={`${renderBrandIcon(icon)}${name}`} />
+                ))}
+              </div>
+            </div>
+          )
+        }
+      </aside>
+
+      {
+        hasBody && (
+          <div class="tile note-prose @3xl:col-span-8">
+            <Content />
+          </div>
+        )
+      }
+    </div>
+  </article>
+</PageShell>
