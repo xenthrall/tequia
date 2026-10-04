@@ -388,7 +388,34 @@ a {
   .note-prose img {
     max-width: 100%;
     height: auto;
+    border: 1px solid var(--border);
     border-radius: 14px;
+  }
+
+  /* Los diagramas SVG suelen tener fondo transparente: fondo claro fijo
+     para que se lean igual en modo oscuro. */
+  .note-prose img[src$=".svg"] {
+    background: #fff;
+    padding: 16px;
+  }
+
+  /* Pie de foto: una línea en cursiva justo debajo de la imagen, en el mismo
+     párrafo. Ver docs/proyectos.md (Imágenes). */
+  /* Centrado para que una imagen angosta (p.ej. un árbol de carpetas) no
+     quede pegada a la izquierda; las anchas ocupan todo el ancho igual. */
+  .note-prose p:has(> img) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .note-prose p:has(> img) > em {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-style: normal;
+    letter-spacing: 0.02em;
+    color: var(--muted);
   }
 
   .note-prose :not(pre) > code {

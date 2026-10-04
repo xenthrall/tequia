@@ -38,21 +38,22 @@ const notas = defineCollection({
   }),
 });
 
-// Proyectos y experimentos: una sola colección, un archivo por idioma en
-// src/content/proyectos/<idioma>/<slug>.md. El slug es el mismo en todos los
-// idiomas (son nombres propios). Promover un experimento a proyecto es
-// cambiar `kind` y poner `promotedOn`: no se mueve el archivo. Guía completa
-// en docs/proyectos.md.
+// Proyectos y experimentos: una carpeta por proyecto con un archivo por
+// idioma y sus imágenes al lado: src/content/proyectos/<slug>/<idioma>.md.
+// El slug (nombre de la carpeta) es el mismo en todos los idiomas. Promover
+// un experimento a proyecto es cambiar `kind` y poner `promotedOn`: no se
+// mueve nada. Las carpetas que empiezan por "_" (plantilla) se ignoran. Guía
+// completa en docs/proyectos.md.
 const proyectos = defineCollection({
   loader: glob({
     base: "./src/content/proyectos",
-    pattern: "*/**/[!_]*.md",
+    pattern: "[!_]*/*.md",
     generateId: ({ entry }) => {
-      const [locale] = entry.split("/");
+      const [slug, file] = entry.split("/");
+      const locale = file.replace(/\.md$/, "");
       if (!isLocale(locale)) {
-        throw new Error(`Proyecto "${entry}": la primera carpeta debe ser un idioma (en, es).`);
+        throw new Error(`Proyecto "${entry}": el archivo debe llamarse como un idioma (es.md, en.md).`);
       }
-      const slug = entry.split("/").pop()!.replace(/\.md$/, "");
       return `${locale}/${slug}`;
     },
   }),

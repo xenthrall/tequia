@@ -192,7 +192,7 @@ Guía práctica de escritura y publicación: `docs/notas.md`.
 
 ## 14. Proyectos y experimentos (2026-10-03)
 
-Dos niveles de compromiso, una sola colección de contenido (`src/content/proyectos/`, guía práctica en `docs/proyectos.md`):
+Dos niveles de compromiso, una sola colección de contenido (`src/content/proyectos/<slug>/`, una carpeta por proyecto con sus textos por idioma y sus imágenes; guía práctica en `docs/proyectos.md`):
 
 - **Proyectos** (`kind: project`): cosas en las que Jhon invierte mucho tiempo porque cree que son importantes, y en las que va a seguir trabajando. Hoy: **Atlas** (boilerplate / plataforma base donde investiga y pone a prueba su arquitectura) y **Café del Tiempo** (construido sobre la base y los conceptos de Atlas; campo `builtOn`).
 - **Experimentos** (`kind: experiment`): ideas a prueba, con una pregunta (`hypothesis`) que intentan responder. Hoy: **Faro**.
