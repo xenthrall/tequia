@@ -42,6 +42,7 @@ Opcionales: solo donde aporten. Van en la carpeta del proyecto y se nombran seg�
 | `ui-<qué>.webp` | Capturas de la interfaz: `ui-boveda.webp`, `ui-simulador.webp`. |
 | `diagrama-<qué>.svg` | Arquitectura y flujos (Excalidraw → SVG). Se muestran sobre fondo blanco para que se lean en modo oscuro. |
 | `datos-<qué>.webp` | Modelos de datos, tablas, esquemas. |
+| `codigo-<qué>.png` | Capturas del editor: estructura de carpetas, un fragmento de código. |
 | `demo.mp4` | Video demo (o `demo.webm`). Uno por proyecto. Se muestra arriba en la ficha en lugar de la portada, que pasa a ser su póster (la imagen antes de reproducir). Como la portada, no se referencia desde el texto. Idealmente corto y de pocos MB. |
 
 Minúsculas, con guiones, sin tildes. Puedes subir capturas en `.png`: Astro las convierte a `.webp` liviano al publicar. Para usarlas en el texto, **siempre con `./`**, y el pie de foto en la línea siguiente (sin línea en blanco en medio), en cursiva y con la fecha de la captura:
@@ -57,6 +58,40 @@ La fecha hace que una captura vieja se lea como una foto de ese momento, no como
 - Imagen referenciada que no existe → falla (`ImageNotFound`).
 - Imagen en la carpeta que ningún idioma usa → falla (`Imagen sin usar: …`). Úsala o bórrala. La `portada` es la excepción.
 - Cualquier otro archivo en la carpeta de un proyecto (un `.txt`, un video con otro nombre…) → falla (`Archivo no reconocido: …`).
+
+## Peso en el repositorio
+
+Git guarda **cada versión de cada archivo para siempre**. Con el código guarda casi solo la diferencia; con imágenes y videos no puede (ya vienen comprimidos), así que reemplazar un video de 3 MB suma 3 MB al historial, y la versión vieja sigue ahí aunque la borres (pasó con `public/music/piano1.mp3`: ya no está en el sitio, pero sigue en el historial). El deploy no se ve afectado, porque descarga solo el último commit; lo que crece es lo que baja un `git clone`.
+
+Reglas:
+
+1. **Itera antes del commit.** Reemplazar una captura 10 veces en tu carpeta no cuesta nada: solo queda en el historial la versión que commiteas.
+2. **Videos de menos de 5 MB y menos de un minuto**, siempre optimizados con la receta de abajo antes del commit.
+3. **Capturas sin culpa.** PNG de 100–500 KB se pueden reemplazar cuando quieras.
+4. **Reemplaza los videos poco.** El video muestra el proyecto, no cada cambio: actualízalo cuando la app cambie de verdad.
+5. **Nunca subas archivos grandes "de paso"** (grabaciones crudas, exportaciones de 100 MB). Una vez en GitHub, sacarlos obliga a reescribir el historial.
+
+Si algún día los videos se vuelven muchos o pesados, las salidas son Git LFS o alojarlos fuera del repo. Hoy no hace falta.
+
+### Optimizar un video
+
+Los grabadores de pantalla guardan el video para grabar rápido, no para pesar poco. Antes de copiarlo a la carpeta del proyecto, pásalo por ffmpeg (`sudo apt install ffmpeg`):
+
+```bash
+ffmpeg -i grabacion.mp4 -vf scale=1280:-2 -c:v libx264 -crf 26 -preset slow -pix_fmt yuv420p -an -movflags +faststart demo.mp4
+```
+
+| Opción | Qué hace |
+|---|---|
+| `-vf scale=1280:-2` | Lo baja a 1280 px de ancho, el tamaño al que se ve en la ficha. `-2` mantiene la proporción. |
+| `-c:v libx264` | H.264, el formato que reproduce cualquier navegador. |
+| `-crf 26` | Calidad: menos número = más calidad y más peso. Entre 23 y 28 va bien para capturas de pantalla; si el texto se ve borroso, baja a 23. |
+| `-preset slow` | Tarda más en comprimir y a cambio pesa menos. |
+| `-pix_fmt yuv420p` | El formato de color que aceptan todos los navegadores. |
+| `-an` | Quita el audio (una demo de pantalla no lo necesita). |
+| `-movflags +faststart` | Pone el índice del video al principio del archivo, para que el navegador empiece a reproducir antes de bajarlo entero. |
+
+Con la demo de Plymotion (40 s, 1920×1200 a 60 fps): **2,8 MB → 0,8 MB**, sin diferencia visible en la ficha.
 
 ## Frontmatter
 

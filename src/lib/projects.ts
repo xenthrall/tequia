@@ -77,7 +77,7 @@ function assertProjectFolders(all: Work[]) {
     const known = /^[a-z]{2}\.md$/.test(file) || DEMO_FILE.test(file) || projectImages.some((image) => image.slug === slug && image.file === file);
     if (!known) {
       throw new Error(
-        `Archivo no reconocido: src/content/proyectos/${slug}/${file}. Se esperan es.md/en.md, imágenes (portada, ui-…, diagrama-…, datos-…) o demo.mp4.`,
+        `Archivo no reconocido: src/content/proyectos/${slug}/${file}. Se esperan es.md/en.md, imágenes (portada, ui-…, diagrama-…, datos-…, codigo-…) o demo.mp4.`,
       );
     }
   }
